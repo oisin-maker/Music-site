@@ -1,0 +1,25 @@
+# Rebuilds the live site every hour so The Wire picks up new headlines.
+# Setup: in Netlify (Site configuration → Build & deploy → Build hooks) or
+# Vercel (Settings → Git → Deploy Hooks), create a hook and copy its URL.
+# Then in GitHub: Settings → Secrets and variables → Actions → New secret,
+# name it DEPLOY_HOOK_URL and paste the URL.
+name: Refresh feeds
+
+on:
+  schedule:
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a rebuild
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "DEPLOY_HOOK_URL secret not set yet, skipping."
+            exit 0
+          fi
+          curl -fsS -X POST "$DEPLOY_HOOK_URL"

@@ -1,0 +1,126 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import GigMap from '../components/GigMap.astro';
+import Quiz from '../components/Quiz.astro';
+import { getArticles } from '../lib/articles.js';
+import { getWireItems, formatDate } from '../lib/feeds.js';
+import { playlist } from '../data/home.js';
+
+const articles = getArticles();
+const featured = articles.find((a) => a.section === 'reviews') || articles[0];
+const latest = articles.filter((a) => a !== featured).slice(0, 6);
+const { items: wire, live } = await getWireItems();
+const wireTop = wire.slice(0, 8);
+const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+---
+<Base>
+  <section class="hero" aria-label="Featured">
+    <a href={`/news/${featured.slug}`} class="hero-img" style="display:block" aria-label={`Read: ${featured.title}`}></a>
+    <Header />
+    <div class="hero-body">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:980px">
+        <span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+          <span class="label" style="margin-right:6px">{featured.kicker || featured.section} · Featured</span>
+          {(featured.tags || []).slice(0, 2).map((t) => <span class="tag">{t}</span>)}
+        </span>
+        <h1><a href={`/news/${featured.slug}`}>{featured.title}</a></h1>
+        <span style="font-size:13px;color:rgba(255,255,255,.85)">By {featured.author} · {fmt(featured.date)}</span>
+      </div>
+      {featured.score && <div style="display:flex;align-items:baseline;gap:6px"><span class="score">{featured.score}</span><span style="font-size:13px;color:rgba(255,255,255,.8)">/10</span></div>}
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section id="manifesto" class="two-col rule-b">
+      <div class="label label-red col-l">What we stand for</div>
+      <div class="col-r" style="display:flex;flex-direction:column;gap:20px">
+        <p class="serif statement">A home for London music fans with taste — and a stand against the closing of the city's <em>small rooms</em>: the pubs, basements and arches where London's music starts.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <a class="btn btn-ink" href="/news/why-quicksilver">Read our manifesto</a>
+          <a class="btn" href="#map">This week's gig map</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="reviews" class="rule-b" style="padding:28px 0 36px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
+        <h2 class="label" style="margin:0;font-size:14px">Latest from Quicksilver</h2>
+        <a class="link-red" style="font-size:12px" href="/news">All news</a>
+      </div>
+      <div class="tiles">
+        {latest.map((a) => (
+          <a href={`/news/${a.slug}`} class="tile">
+            <span class={`art art-${a.art || 'a'}`} style="aspect-ratio:1/1">
+              {a.image && <img src={a.image} alt="" loading="lazy" />}
+              {a.score && <span class="badge">{a.score}</span>}
+            </span>
+            <span class="muted" style="font-size:11px">{fmt(a.date)} · {a.author}</span>
+            <span class="tile-title">{a.title}</span>
+            <span style="display:flex;flex-wrap:wrap;gap:6px">{(a.tags || []).slice(0, 2).map((t) => <span class="tag" style="height:24px;font-size:10px">{t}</span>)}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <GigMap />
+
+    <section class="two-equal rule-b">
+      <div class="col-l"><Quiz /></div>
+      <div id="playlist" class="col-r" style="display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <h2 class="label" style="margin:0;font-size:14px">50 of the month</h2>
+          <span class="muted" style="font-size:12px">Curated by the writers</span>
+        </div>
+        {playlist.embedUrl
+          ? <iframe title={playlist.title} src={playlist.embedUrl} width="100%" height="380" style="border:0;border-radius:8px" loading="lazy" allow="encrypted-media"></iframe>
+          : <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:8px;background:var(--ink);color:var(--paper)">
+              <span class="art art-c" style="flex:none;width:88px;height:88px"></span>
+              <span style="display:flex;flex-direction:column;gap:6px"><span class="serif" style="font-weight:700;font-size:22px">{playlist.title}</span><span style="font-size:12px;color:#B9B2A8">Add a Spotify or Apple Music embed URL in src/data/home.js</span></span>
+            </div>}
+      </div>
+    </section>
+
+    <section aria-label="The Wire" class="rule-b" style="padding:28px 0 36px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+        <h2 class="label" style="margin:0;font-size:14px">The Wire · from around the scene</h2>
+        <a class="link-red" style="font-size:12px" href="/news?section=wire">See all</a>
+      </div>
+      {!live && <p class="muted" style="font-size:12px;margin:0 0 12px">Live feeds unavailable right now. Showing saved headlines.</p>}
+      <div class="scroller">
+        {wireTop.map((w) => (
+          <a href={w.url} target="_blank" rel="noopener" class="wire-card">
+            <span style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <span class="src-badge">{w.badge}</span>
+              <span class="muted" style="font-size:11px">{formatDate(w.date)}</span>
+            </span>
+            <span class="serif" style="font-style:italic;font-size:21px;line-height:1.25">{w.title}</span>
+            <span class="label label-red" style="font-size:11px">{w.source} ↗</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .two-col { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); }
+  .two-equal { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .col-l { padding: 28px 28px 32px 0; border-right: var(--line); }
+  .col-r { padding: 28px 0 32px 28px; }
+  .statement { margin: 0; font-size: clamp(26px, 3vw, 40px); line-height: 1.2; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 32px 20px; }
+  .tile { display: flex; flex-direction: column; gap: 10px; }
+  .tile:hover .art { filter: brightness(1.15); }
+  .tile-title { font-family: var(--cond); font-weight: 700; font-size: 19px; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.15; }
+  .tile:hover .tile-title { color: var(--red); }
+  .badge { position: absolute; top: 12px; right: 12px; min-width: 46px; height: 46px; padding: 0 6px; border-radius: 999px; background: var(--paper); color: var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-weight: 700; font-size: 18px; }
+  .scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr); overflow-x: auto; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .wire-card { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-height: 200px; padding: 20px; border-right: 1px solid var(--red-soft); }
+  .src-badge { width: 40px; height: 40px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--cond); font-weight: 700; font-size: 12px; }
+  @media (max-width: 900px) {
+    .two-col, .two-equal { grid-template-columns: 1fr; }
+    .col-l { border-right: 0; padding-right: 0; }
+    .col-r { padding-left: 0; }
+  }
+</style>

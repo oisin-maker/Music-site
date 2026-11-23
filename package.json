@@ -1,0 +1,20 @@
+{
+  "name": "quicksilver-site",
+  "version": "1.0.0",
+  "description": "Quicksilver: London music, small rooms. Homepage and news site.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "astro": "^7.4.13",
+    "rss-parser": "^3.13.0"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}

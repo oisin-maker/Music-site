@@ -1,0 +1,21 @@
+---
+import { footerLinks } from '../data/nav.js';
+---
+<footer id="newsletter" class="site-footer">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px;padding-bottom:32px;border-bottom:1px solid var(--red)">
+    <span class="logo">Quicksilver</span>
+    <form style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end" action="#" method="post" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks!';">
+      <label class="label" style="display:flex;flex-direction:column;gap:6px;font-size:12px">
+        Weekly newsletter
+        <input type="email" name="email" required placeholder="you@example.com" />
+      </label>
+      <button class="btn btn-red" type="submit">Subscribe</button>
+    </form>
+  </div>
+  <div class="label" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;padding-top:20px;font-size:12px">
+    <span style="color:#B9B2A8">Reviews &amp; thought on London's small rooms</span>
+    <span style="display:flex;flex-wrap:wrap;gap:22px">
+      {footerLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+    </span>
+  </div>
+</footer>

@@ -1,0 +1,129 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import { getArticles, sections } from '../../lib/articles.js';
+import { getWireItems, formatDate } from '../../lib/feeds.js';
+
+const articles = getArticles();
+const { items: wire, live } = await getWireItems();
+
+// One list: our articles (internal) + The Wire (external), newest first.
+const entries = [
+  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Quicksilver', badge: 'QS', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, score: a.score })),
+  ...wire.map((w) => ({ kind: 'wire', section: 'wire', source: w.source, badge: w.badge, title: w.title, excerpt: w.excerpt, url: w.url, date: w.date })),
+].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+const outlets = [...new Set(wire.map((w) => w.source))];
+const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', label: 'The Wire' }];
+---
+<Base title="News — Quicksilver">
+  <section class="hero" aria-label="News">
+    <div class="hero-img" style="min-height:52vh;--hero-size:auto 120%"></div>
+    <Header current="News" />
+    <div class="hero-body">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span class="label">London music, small rooms</span>
+        <h1>News <em>&amp; the wire</em></h1>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="news-layout rule-b">
+      <aside class="news-side" aria-label="News navigation">
+        <nav aria-label="Sections">
+          <div class="side-h">Sections</div>
+          {navSections.map((s) => (
+            <a href={s.id === 'all' ? '/news' : `/news?section=${s.id}`} class="side-link" data-filter="section" data-value={s.id}>{s.label}</a>
+          ))}
+        </nav>
+        <nav aria-label="Outlets">
+          <div class="side-h">From the wire</div>
+          {outlets.map((o) => (
+            <a href={`/news?source=${encodeURIComponent(o)}`} class="side-link" data-filter="source" data-value={o}>{o}</a>
+          ))}
+          {!live && <p class="muted" style="font-size:12px">Live feeds unavailable. Showing saved headlines.</p>}
+        </nav>
+        <nav aria-label="Elsewhere">
+          <div class="side-h">Elsewhere</div>
+          <a class="side-link" href="/#map">Gig map</a>
+          <a class="side-link" href="/#quiz">Daily quiz</a>
+          <a class="side-link" href="/#playlist">50 of the month</a>
+        </nav>
+      </aside>
+
+      <section class="news-main" aria-live="polite">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;border-bottom:1px solid var(--ink)">
+          <h2 class="label news-heading" style="margin:0;font-size:14px">All news</h2>
+          <span class="muted news-count" style="font-size:12px">{entries.length} stories</span>
+        </div>
+        <ol class="news-list">
+          {entries.map((e) => (
+            <li class="news-item" data-section={e.section} data-source={e.source}>
+              <a href={e.url} target={e.kind === 'wire' ? '_blank' : undefined} rel={e.kind === 'wire' ? 'noopener' : undefined} class="news-row">
+                {e.kind === 'own'
+                  ? <span class={`art art-${e.art || 'a'}`} style="aspect-ratio:1/1"></span>
+                  : <span class="src-badge">{e.badge}</span>}
+                <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                  <span class="label" style="font-size:11px"><span class="label-red">{e.kind === 'own' ? e.section : e.source}</span> <span class="muted">· {formatDate(e.date)}{e.author ? ` · ${e.author}` : ''}</span></span>
+                  <span class="news-title">{e.title}{e.kind === 'wire' ? ' ↗' : ''}</span>
+                  {e.excerpt && <span class="muted" style="font-size:13px">{e.excerpt}</span>}
+                </span>
+                {e.score ? <span class="serif" style="font-weight:700;font-size:32px">{e.score}</span> : <span></span>}
+              </a>
+            </li>
+          ))}
+        </ol>
+        <p class="news-empty muted" hidden>Nothing here yet.</p>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .news-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); }
+  .news-side { padding: 32px 24px 40px 0; border-right: var(--line); display: flex; flex-direction: column; gap: 32px; }
+  .side-h { padding-bottom: 10px; margin-bottom: 6px; border-bottom: 1px solid var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .side-link { display: flex; align-items: center; min-height: 38px; padding-left: 12px; border-left: 3px solid transparent; font-family: var(--cond); font-weight: 600; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .side-link.active { border-left-color: var(--red); color: var(--red); font-weight: 700; }
+  .news-main { padding: 32px 0 40px 32px; }
+  .news-list { list-style: none; margin: 0; padding: 0; }
+  .news-item { border-bottom: 1px solid var(--red-soft); }
+  .news-row { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 18px 0; }
+  .news-row .src-badge { width: 56px; height: 56px; margin: 0 16px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--cond); font-weight: 700; font-size: 13px; }
+  .news-title { font-family: var(--serif); font-weight: 700; font-size: 24px; line-height: 1.2; }
+  .news-row:hover .news-title { color: var(--red); }
+  @media (max-width: 900px) {
+    .news-layout { grid-template-columns: 1fr; }
+    .news-side { border-right: 0; padding-right: 0; flex-direction: row; flex-wrap: wrap; gap: 20px; }
+    .news-side nav { flex: 1 1 200px; }
+    .news-main { padding-left: 0; }
+    .news-row { grid-template-columns: 64px minmax(0, 1fr); }
+    .news-row > :last-child { display: none; }
+  }
+</style>
+
+<script>
+  const params = new URLSearchParams(location.search);
+  const section = params.get('section') || 'all';
+  const source = params.get('source');
+  let shown = 0;
+  document.querySelectorAll<HTMLElement>('.news-item').forEach((li) => {
+    const ok = source ? li.dataset.source === source : section === 'all' || li.dataset.section === section;
+    li.hidden = !ok;
+    if (ok) shown++;
+  });
+  document.querySelectorAll<HTMLElement>('.side-link[data-filter]').forEach((a) => {
+    const on = source ? a.dataset.filter === 'source' && a.dataset.value === source : a.dataset.filter === 'section' && a.dataset.value === section;
+    a.classList.toggle('active', on);
+    if (on) {
+      a.setAttribute('aria-current', 'page');
+      const h = document.querySelector('.news-heading');
+      if (h) h.textContent = a.textContent || '';
+    }
+  });
+  const count = document.querySelector('.news-count');
+  if (count) count.textContent = `${shown} ${shown === 1 ? 'story' : 'stories'}`;
+  const empty = document.querySelector<HTMLElement>('.news-empty');
+  if (empty) empty.hidden = shown > 0;
+</script>

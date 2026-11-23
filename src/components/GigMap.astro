@@ -1,0 +1,74 @@
+---
+import { gigs, gigWeek } from '../data/home.js';
+---
+<section id="map" class="rule-b" style="padding:28px 0 36px">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:18px">
+    <h2 class="label" style="margin:0;font-size:14px">Gig map · {gigs.length} picks this week</h2>
+    <span class="muted" style="font-size:12px">{gigWeek} · sample listings</span>
+  </div>
+  <div class="gm">
+    <div class="gm-map" role="group" aria-label="Map of this week's picks">
+      <svg viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 186 C 50 180, 90 168, 120 176 S 170 204, 200 196 S 236 172, 250 184 S 262 222, 284 222 S 312 196, 318 184 S 360 194, 400 190" fill="none" stroke="#9FB7C9" stroke-width="16" stroke-linecap="round" />
+        <path d="M0 186 C 50 180, 90 168, 120 176 S 170 204, 200 196 S 236 172, 250 184 S 262 222, 284 222 S 312 196, 318 184 S 360 194, 400 190" fill="none" stroke="#D40000" stroke-width="1" stroke-dasharray="3 5" />
+      </svg>
+      <span class="gm-river">River Thames</span>
+      {gigs.map((g, i) => (
+        <button class="gm-pin" data-i={i} style={`left:${g.x}%;top:${g.y}%`} aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`${g.day}: ${g.act} at ${g.venue}`}>
+          <span>{i + 1}</span>{g.area}
+        </button>
+      ))}
+    </div>
+    <ol class="gm-list">
+      {gigs.map((g, i) => (
+        <li>
+          <button class="gm-row" data-i={i} aria-expanded={i === 0 ? 'true' : 'false'}>
+            <span class="gm-n">{i + 1}</span>
+            <span class="label" style="font-size:13px">{g.day} {g.time}</span>
+            <span style="min-width:0"><span class="gm-act">{g.act}</span><span class="muted" style="display:block;font-size:12px">{g.venue} · {g.area}</span></span>
+            <span class="muted" style="font-size:12px">{g.price}</span>
+          </button>
+          <div class="gm-detail" hidden={i !== 0}>
+            <span class="muted" style="font-size:13px">{g.note}</span>
+            <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+              {g.tags.map((t) => <span class="tag">{t}</span>)}
+              <a class="btn btn-red" style="margin-left:auto;height:36px" href={g.url}>Tickets</a>
+            </span>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+  .gm-map { position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; background: #EFEAE0; }
+  .gm-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .gm-river { position: absolute; left: 3%; top: 66%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #5E7486; }
+  .gm-pin { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 6px; border: 1px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+  .gm-pin span { width: 22px; height: 22px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .gm-pin[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; z-index: 2; box-shadow: 0 6px 16px rgba(212,0,0,.35); }
+  .gm-pin[aria-pressed="true"] span { background: #fff; color: var(--red); }
+  .gm-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+  .gm-list li { border-bottom: 1px solid var(--red-soft); }
+  .gm-row { width: 100%; min-height: 52px; display: grid; grid-template-columns: 28px 92px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border: 0; background: transparent; color: var(--ink); text-align: left; cursor: pointer; font-family: var(--mono); }
+  .gm-row[aria-expanded="true"] .gm-act { color: var(--red); }
+  .gm-n { width: 24px; height: 24px; border-radius: 999px; border: 1px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--cond); font-weight: 700; font-size: 11px; }
+  .gm-act { display: block; font-family: var(--cond); font-weight: 700; font-size: 16px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gm-detail { display: flex; flex-direction: column; gap: 10px; padding: 0 0 16px 40px; }
+  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const select = (i: string) => {
+    document.querySelectorAll('.gm-pin').forEach((p) => p.setAttribute('aria-pressed', (p as HTMLElement).dataset.i === i ? 'true' : 'false'));
+    document.querySelectorAll('.gm-row').forEach((r) => {
+      const on = (r as HTMLElement).dataset.i === i;
+      r.setAttribute('aria-expanded', on ? 'true' : 'false');
+      const d = r.nextElementSibling as HTMLElement | null;
+      if (d) d.hidden = !on;
+    });
+  };
+  document.querySelectorAll('.gm-pin, .gm-row').forEach((el) => el.addEventListener('click', () => select((el as HTMLElement).dataset.i || '0')));
+</script>

@@ -1,0 +1,90 @@
+---
+import { quiz } from '../data/home.js';
+const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+---
+<div id="quiz" class="quiz" data-quiz={JSON.stringify(quiz)}>
+  <div style="display:flex;justify-content:space-between;align-items:baseline">
+    <h2 class="label" style="margin:0;font-size:14px">The daily quiz · {today}</h2>
+    <span class="label label-red quiz-progress" style="font-size:12px">1 / {quiz.length}</span>
+  </div>
+  <div class="quiz-play">
+    <p class="quiz-q"></p>
+    <div class="quiz-opts"></div>
+    <div class="quiz-after" hidden>
+      <span class="quiz-explain"></span>
+      <button class="btn btn-red quiz-next" type="button">Next question</button>
+    </div>
+  </div>
+  <div class="quiz-done" hidden>
+    <p class="quiz-score"></p>
+    <p style="margin:0;font-size:14px;color:var(--ink-2)">A new quiz every morning. Get it in your inbox with the week's gig picks.</p>
+    <form style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end" onsubmit="event.preventDefault(); this.querySelector('.btn-red').textContent='You\'re in';">
+      <label class="label" style="display:flex;flex-direction:column;gap:6px;font-size:12px">Email<input type="email" required placeholder="you@example.com" style="height:44px;width:260px;max-width:100%;padding:0 16px;border:1px solid var(--ink);border-radius:999px;background:transparent;font-family:var(--mono);font-size:13px" /></label>
+      <button class="btn btn-red" type="submit">Send me tomorrow's</button>
+      <button class="btn quiz-restart" type="button">Play again</button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .quiz { display: flex; flex-direction: column; gap: 18px; }
+  .quiz-q { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 30px; line-height: 1.2; }
+  .quiz-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+  .quiz-opts button { min-height: 56px; padding: 10px 16px; border: 1px solid var(--ink); border-radius: 8px; background: transparent; color: var(--ink); text-align: left; font-family: var(--mono); font-size: 14px; cursor: pointer; }
+  .quiz-opts button.right { background: var(--ink); color: var(--paper); }
+  .quiz-opts button.wrong { background: var(--red); border-color: var(--red); color: #fff; }
+  .quiz-opts button.dim { border-color: #CFC6B8; color: #6E675E; }
+  .quiz-after { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 14px; font-size: 13px; color: var(--ink-2); }
+  .quiz-done { display: flex; flex-direction: column; gap: 16px; }
+  .quiz-score { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 44px; line-height: 1.1; }
+  @media (max-width: 700px) { .quiz-opts { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  type Q = { prompt: string; options: string[]; answer: number; explain: string };
+  document.querySelectorAll<HTMLElement>('.quiz').forEach((root) => {
+    const qs: Q[] = JSON.parse(root.dataset.quiz || '[]');
+    let i = 0, score = 0;
+    const $ = (s: string) => root.querySelector(s) as HTMLElement;
+    const render = () => {
+      const q = qs[i];
+      $('.quiz-progress').textContent = `${i + 1} / ${qs.length}`;
+      $('.quiz-q').textContent = q.prompt;
+      $('.quiz-after').hidden = true;
+      const opts = $('.quiz-opts');
+      opts.innerHTML = '';
+      q.options.forEach((text, j) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = text;
+        b.addEventListener('click', () => {
+          if (j === q.answer) score++;
+          opts.querySelectorAll('button').forEach((x, k) => {
+            (x as HTMLButtonElement).disabled = true;
+            x.classList.add(k === q.answer ? 'right' : k === j ? 'wrong' : 'dim');
+            if (k === q.answer) x.textContent = '✓ ' + x.textContent;
+            if (k === j && k !== q.answer) x.textContent = '✕ ' + x.textContent;
+          });
+          $('.quiz-explain').textContent = q.explain;
+          $('.quiz-next').textContent = i === qs.length - 1 ? 'See score' : 'Next question';
+          $('.quiz-after').hidden = false;
+        });
+        opts.appendChild(b);
+      });
+    };
+    $('.quiz-next').addEventListener('click', () => {
+      if (i < qs.length - 1) { i++; render(); return; }
+      $('.quiz-play').hidden = true;
+      $('.quiz-done').hidden = false;
+      $('.quiz-progress').textContent = `${qs.length} / ${qs.length}`;
+      $('.quiz-score').textContent = `You scored ${score} out of ${qs.length}.`;
+    });
+    $('.quiz-restart').addEventListener('click', () => {
+      i = 0; score = 0;
+      $('.quiz-play').hidden = false;
+      $('.quiz-done').hidden = true;
+      render();
+    });
+    render();
+  });
+</script>
