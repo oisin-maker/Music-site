@@ -1,7 +1,7 @@
 {
-  "name": "quicksilver-site",
+  "name": "aerial-site",
   "version": "1.0.0",
-  "description": "Quicksilver: London music, small rooms. Homepage and news site.",
+  "description": "Aerial: London music, small rooms. Homepage and news site.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

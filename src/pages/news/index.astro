@@ -9,14 +9,14 @@ const { items: wire, live } = await getWireItems();
 
 // One list: our articles (internal) + The Wire (external), newest first.
 const entries = [
-  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Quicksilver', badge: 'QS', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, score: a.score })),
+  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Aerial', badge: 'AE', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, score: a.score })),
   ...wire.map((w) => ({ kind: 'wire', section: 'wire', source: w.source, badge: w.badge, title: w.title, excerpt: w.excerpt, url: w.url, date: w.date })),
 ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
 const outlets = [...new Set(wire.map((w) => w.source))];
 const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', label: 'The Wire' }];
 ---
-<Base title="News — Quicksilver">
+<Base title="News — Aerial">
   <section class="hero" aria-label="News">
     <div class="hero-img" style="min-height:52vh;--hero-size:auto 120%"></div>
     <Header current="News" />

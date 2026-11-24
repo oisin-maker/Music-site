@@ -1,4 +1,4 @@
-# Quicksilver
+# Aerial
 
 London music, small rooms. A homepage and a navigable news page, built with [Astro](https://astro.build).
 

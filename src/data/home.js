@@ -22,6 +22,6 @@ export const quiz = [
 
 // Playlist: paste a Spotify/Apple Music embed URL here when ready.
 export const playlist = {
-  title: 'Quicksilver 50: November',
+  title: 'Aerial 50: November',
   embedUrl: '', // e.g. https://open.spotify.com/embed/playlist/XXXXXXXX
 };

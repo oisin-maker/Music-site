@@ -3,7 +3,7 @@ import { feeds, fallbackItems, PER_FEED, MAX_ITEMS } from '../data/feeds.js';
 
 const parser = new Parser({
   timeout: 10000,
-  headers: { 'User-Agent': 'QuicksilverBot/1.0 (+https://example.com)' },
+  headers: { 'User-Agent': 'AerialBot/1.0 (+https://example.com)' },
 });
 
 const stripHtml = (s = '') => s.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();

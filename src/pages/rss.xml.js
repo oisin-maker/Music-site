@@ -14,7 +14,7 @@ export function GET({ site }) {
     </item>`).join('');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel>
-  <title>Quicksilver</title>
+  <title>Aerial</title>
   <link>${base}</link>
   <description>London music, small rooms.</description>${items}
 </channel></rss>`;

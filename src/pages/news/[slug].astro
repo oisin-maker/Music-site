@@ -15,7 +15,7 @@ const more = all.filter((a) => a.slug !== article.slug).slice(0, 4);
 const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'News';
 ---
-<Base title={`${article.title} — Quicksilver`} description={article.standfirst}>
+<Base title={`${article.title} — Aerial`} description={article.standfirst}>
   <section class="hero" aria-label="Article header">
     <div class="hero-img" role="img" aria-label="Article image" style={article.image ? `--hero-image:url(${article.image});--hero-size:cover` : ''}></div>
     <Header current={sectionLabel} />
@@ -57,7 +57,7 @@ const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'N
         <Content />
         <div class="author-box">
           <span class="author-initials">{article.author.split(/[\s&]+/).filter(Boolean).map((w) => w[0]).join('').slice(0, 2)}</span>
-          <span><strong>{article.author}</strong> writes for Quicksilver.</span>
+          <span><strong>{article.author}</strong> writes for Aerial.</span>
         </div>
       </article>
 
@@ -84,7 +84,7 @@ const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'N
 
     <section aria-label="More stories" style="padding:32px 0 8px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
-        <h2 class="label" style="margin:0;font-size:14px">More from Quicksilver</h2>
+        <h2 class="label" style="margin:0;font-size:14px">More from Aerial</h2>
         <a class="link-red" style="font-size:12px" href="/news">All news</a>
       </div>
       <div class="more">
