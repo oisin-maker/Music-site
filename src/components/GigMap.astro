@@ -54,10 +54,10 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-inv { --ink: #FAF8F3; --paper: #161513; --muted: #B9B2A8; --red-soft: rgba(255,107,107,.45); background: #161513; color: #FAF8F3; margin: 0 calc(-1 * var(--gutter)); padding-left: var(--gutter) !important; padding-right: var(--gutter) !important; }
   .gm-inv .tag { border-color: #FF8A8A; color: #FF8A8A; }
   .gm-inv .gm-row[aria-expanded="true"] .gm-act { color: #FF6B6B; }
-  .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
-  .gm-map { position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; background: #1F1D1A; }
+  .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
+  .gm-map { position: relative; min-height: 640px; height: 100%; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; background: #1F1D1A; }
   .gm-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .gm-river { position: absolute; left: 3%; top: 72%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #8FB0C6; }
+  .gm-river { position: absolute; left: 3%; top: 62%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #8FB0C6; }
   .gm-pin { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 6px; border: 1px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
   .gm-pin span { width: 22px; height: 22px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 11px; }
   .gm-pin[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; z-index: 2; box-shadow: 0 6px 16px rgba(212,0,0,.35); }
@@ -78,8 +78,8 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-chip { height: 34px; padding: 0 14px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
   .gm-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
   .gm-inv .gm-scene { border-color: #FAF8F3; color: #FAF8F3; }
-  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } }
-  @media (max-width: 600px) { .gm-map { aspect-ratio: 1 / 1; } .gm-act { white-space: normal; } .gm-pin[aria-pressed="true"] .gm-area { display: none; } .gm-pin span { width: 24px !important; height: 24px !important; font-size: 11px !important; } .gm-area { display: none; } .gm-pin { padding: 0; height: auto; border: 0; background: transparent; box-shadow: none; } .gm-pin span { width: 28px; height: 28px; font-size: 12px; } .gm-pin[aria-pressed="true"] { background: transparent; box-shadow: none; } .gm-pin[aria-pressed="true"] span { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(212,0,0,.5); } }
+  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } .gm-map { height: auto; min-height: 0; aspect-ratio: 4 / 5; } }
+  @media (max-width: 600px) { .gm-map { aspect-ratio: 4 / 5; } .gm-act { white-space: normal; } .gm-pin[aria-pressed="true"] .gm-area { display: none; } .gm-pin span { width: 24px !important; height: 24px !important; font-size: 11px !important; } .gm-area { display: none; } .gm-pin { padding: 0; height: auto; border: 0; background: transparent; box-shadow: none; } .gm-pin span { width: 28px; height: 28px; font-size: 12px; } .gm-pin[aria-pressed="true"] { background: transparent; box-shadow: none; } .gm-pin[aria-pressed="true"] span { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(212,0,0,.5); } }
 </style>
 
 <script>

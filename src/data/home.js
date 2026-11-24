@@ -5,7 +5,8 @@
 // Sources checked 24 Nov 2026: Songkick, DICE/RA event pages via listings sites, Skiddle, WeGotTickets, Ents24.
 // Re-check before publishing: line-ups and prices change.
 export const gigWeek = 'Mon 23 – Sat 28 November';
-export const BOUNDS = { west: -0.175, east: 0.03, north: 51.556, south: 51.452 };
+// Tall frame (about 4:5) centred on the Thames, so the map can run the length of the list.
+export const BOUNDS = { west: -0.175, east: 0.03, north: 51.58, south: 51.42 };
 export const toMap = (lat, lng) => ({
   x: Math.round(((lng - BOUNDS.west) / (BOUNDS.east - BOUNDS.west)) * 1000) / 10,
   y: Math.round(((BOUNDS.north - lat) / (BOUNDS.north - BOUNDS.south)) * 1000) / 10,
