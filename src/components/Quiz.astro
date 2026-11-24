@@ -1,13 +1,16 @@
 ---
-import { quiz } from '../data/home.js';
+import { quizPools, quizScenes } from '../data/home.js';
+// Fallback for the static build (no JS): day 0 of each pool. The script below picks today's set.
+const quiz = quizScenes.map(([k, label]) => ({ ...quizPools[k][0], scene: label }));
 const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 ---
-<div id="quiz" class="quiz" data-quiz={JSON.stringify(quiz)}>
+<div id="quiz" class="quiz" data-pools={JSON.stringify(quizPools)} data-scenes={JSON.stringify(quizScenes)}>
   <div style="display:flex;justify-content:space-between;align-items:baseline">
     <h2 class="label" style="margin:0;font-size:14px">The daily quiz · {today}</h2>
     <span class="label label-red quiz-progress" style="font-size:12px">1 / {quiz.length}</span>
   </div>
   <div class="quiz-play">
+    <span class="label label-red quiz-scene" style="font-size:11px"></span>
     <p class="quiz-q"></p>
     <div class="quiz-opts"></div>
     <div class="quiz-after" hidden>
@@ -30,10 +33,10 @@ const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'n
   .quiz { display: flex; flex-direction: column; gap: 18px; }
   .quiz-q { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 30px; line-height: 1.2; }
   .quiz-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
-  .quiz-opts button { min-height: 56px; padding: 10px 16px; border: 1px solid var(--ink); border-radius: 8px; background: transparent; color: var(--ink); text-align: left; font-family: var(--mono); font-size: 14px; cursor: pointer; }
-  .quiz-opts button.right { background: var(--ink); color: var(--paper); }
-  .quiz-opts button.wrong { background: var(--red); border-color: var(--red); color: #fff; }
-  .quiz-opts button.dim { border-color: #CFC6B8; color: #6E675E; }
+  .quiz-opts :global(button) { min-height: 56px; padding: 10px 16px; border: 1px solid var(--ink); border-radius: 8px; background: transparent; color: var(--ink); text-align: left; font-family: var(--mono); font-size: 14px; cursor: pointer; }
+  .quiz-opts :global(button.right) { background: var(--ink); color: var(--paper); }
+  .quiz-opts :global(button.wrong) { background: var(--red); border-color: var(--red); color: #fff; }
+  .quiz-opts :global(button.dim) { border-color: #CFC6B8; color: #6E675E; }
   .quiz-after { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-top: 14px; font-size: 13px; color: var(--ink-2); }
   .quiz-done { display: flex; flex-direction: column; gap: 16px; }
   .quiz-score { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 44px; line-height: 1.1; }
@@ -41,15 +44,21 @@ const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'n
 </style>
 
 <script>
-  type Q = { prompt: string; options: string[]; answer: number; explain: string };
+  type Q = { prompt: string; options: string[]; answer: number; explain: string; scene?: string };
   document.querySelectorAll<HTMLElement>('.quiz').forEach((root) => {
-    const qs: Q[] = JSON.parse(root.dataset.quiz || '[]');
+    const pools: Record<string, Q[]> = JSON.parse(root.dataset.pools || '{}');
+    const scenes: [string, string][] = JSON.parse(root.dataset.scenes || '[]');
+    // Today's set: one question per scene, changing at the reader's local midnight.
+    const now = new Date();
+    const day = Math.floor((now.getTime() - now.getTimezoneOffset() * 60000) / 86400000);
+    const qs: Q[] = scenes.map(([k, label]) => { const p = pools[k] || []; return { ...p[day % p.length], scene: label }; }).filter((q) => q.prompt);
     let i = 0, score = 0;
     const $ = (s: string) => root.querySelector(s) as HTMLElement;
     const render = () => {
       const q = qs[i];
       $('.quiz-progress').textContent = `${i + 1} / ${qs.length}`;
       $('.quiz-q').textContent = q.prompt;
+      const sc = root.querySelector('.quiz-scene'); if (sc) sc.textContent = q.scene || '';
       $('.quiz-after').hidden = true;
       const opts = $('.quiz-opts');
       opts.innerHTML = '';
