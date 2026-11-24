@@ -56,8 +56,17 @@ img { max-width: 100%; display: block; }
   background:
     linear-gradient(180deg, rgba(11,11,13,.85) 0%, rgba(11,11,13,.35) 16%, rgba(11,11,13,0) 30%),
     linear-gradient(0deg, rgba(11,11,13,.9) 0%, rgba(11,11,13,.5) 30%, rgba(11,11,13,0) 55%),
-    var(--hero-image, url(/images/liquid-metal.webp)) center / var(--hero-size, auto 88%) no-repeat,
-    radial-gradient(70% 90% at 50% 45%, #3d3d45 0%, #18171b 55%, #0b0b0d 100%);
+    var(--hero-image, url(/images/liquid-metal.webp)) var(--hero-pos, center) / var(--hero-size, auto 88%) no-repeat,
+    var(--hero-bg, radial-gradient(70% 90% at 50% 45%, #3d3d45 0%, #18171b 55%, #0b0b0d 100%));
+}
+@media (max-width: 700px) {
+  .hero-img[style*="--hero-image"] {
+    background:
+      linear-gradient(180deg, rgba(11,11,13,.85) 0%, rgba(11,11,13,.35) 16%, rgba(11,11,13,0) 30%),
+      linear-gradient(0deg, rgba(11,11,13,.9) 0%, rgba(11,11,13,.5) 30%, rgba(11,11,13,0) 55%),
+      var(--hero-image) var(--hero-pos-m, center) / cover no-repeat,
+      var(--hero-bg, #0b0b0d);
+  }
 }
 .hero a:hover { color: #FFD1D1; }
 .hero-body { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 44px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
