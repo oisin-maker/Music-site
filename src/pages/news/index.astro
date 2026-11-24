@@ -107,9 +107,11 @@ const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', lab
   const params = new URLSearchParams(location.search);
   const section = params.get('section') || 'all';
   const source = params.get('source');
+  const q = (params.get('q') || '').trim().toLowerCase();
   let shown = 0;
   document.querySelectorAll<HTMLElement>('.news-item').forEach((li) => {
-    const ok = source ? li.dataset.source === source : section === 'all' || li.dataset.section === section;
+    const inFilter = source ? li.dataset.source === source : section === 'all' || li.dataset.section === section;
+    const ok = inFilter && (!q || (li.textContent || '').toLowerCase().includes(q));
     li.hidden = !ok;
     if (ok) shown++;
   });
@@ -122,6 +124,10 @@ const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', lab
       if (h) h.textContent = a.textContent || '';
     }
   });
+  if (q) {
+    const h = document.querySelector('.news-heading');
+    if (h) h.textContent = `Results for “${params.get('q')}”`;
+  }
   const count = document.querySelector('.news-count');
   if (count) count.textContent = `${shown} ${shown === 1 ? 'story' : 'stories'}`;
   const empty = document.querySelector<HTMLElement>('.news-empty');

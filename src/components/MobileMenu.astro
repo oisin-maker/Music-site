@@ -1,0 +1,86 @@
+---
+import { mobileMenu, footerLinks } from '../data/nav.js';
+const { current = '' } = Astro.props;
+const icon = {
+  map: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+  quiz: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14"/><path d="M12 17h.01"/></svg>',
+  play: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>',
+};
+---
+<div id="mobile-menu" class="mm" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="mm-panel">
+    <div class="mm-top">
+      <a href="/" class="logo" aria-label="Aerial home">Aerial</a>
+      <button type="button" class="mm-close" data-mm-close>Close
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <form class="mm-search" action="/news" role="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <label class="sr-only" for="mm-q">Search Aerial</label>
+      <input id="mm-q" name="q" type="search" placeholder="Search artists, venues, reviews" />
+    </form>
+
+    <div class="mm-quick">
+      <a href="/#map" class="mm-tile mm-tile-red"><Fragment set:html={icon.map} />Gig map</a>
+      <a href="/#quiz" class="mm-tile"><Fragment set:html={icon.quiz} />Quiz</a>
+      <a href="/#playlist" class="mm-tile"><Fragment set:html={icon.play} />Playlist</a>
+    </div>
+
+    <nav class="mm-nav" aria-label="Main">
+      {mobileMenu.map((m, i) => (
+        <details name="mm-acc" open={current === m.tab}>
+          <summary>
+            <span class="mm-n">{String(i + 1).padStart(2, '0')}</span>
+            <span class="mm-tab">{m.tab}</span>
+            <span class="mm-pm" aria-hidden="true"></span>
+          </summary>
+          <div class="mm-body">
+            <p>{m.intro}</p>
+            {m.groups.map((g) => (
+              <div class="mm-group">
+                <span class="mm-h">{g.h}</span>
+                <span class="mm-pills">{g.items.map(([label, href]) => <a href={href}>{label}</a>)}</span>
+              </div>
+            ))}
+            <a href={m.href} class="mm-all">All {m.tab} →</a>
+          </div>
+        </details>
+      ))}
+    </nav>
+
+    <div class="mm-foot">
+      <a href="#newsletter" class="btn btn-red" data-mm-close>Get the weekly newsletter</a>
+      <span class="mm-links">{footerLinks.slice(0, 4).map((l) => <a href={l.href}>{l.label}</a>)}</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const menu = document.getElementById('mobile-menu');
+  let opener: HTMLElement | null = null;
+  const close = () => {
+    if (!menu || menu.hidden) return;
+    menu.hidden = true;
+    document.documentElement.classList.remove('mm-lock');
+    document.querySelectorAll('.nav-toggle').forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    opener?.focus();
+  };
+  const open = (btn: HTMLElement) => {
+    if (!menu) return;
+    opener = btn;
+    menu.hidden = false;
+    document.documentElement.classList.add('mm-lock');
+    btn.setAttribute('aria-expanded', 'true');
+    (menu.querySelector('[data-mm-close]') as HTMLElement | null)?.focus();
+  };
+  document.querySelectorAll<HTMLElement>('.nav-toggle').forEach((btn) =>
+    btn.addEventListener('click', () => (menu?.hidden ? open(btn) : close()))
+  );
+  menu?.querySelectorAll('[data-mm-close]').forEach((el) => el.addEventListener('click', close));
+  // Following a link inside the menu (incl. same-page anchors) closes it.
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { if (!a.hasAttribute('data-mm-close')) close(); }));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  window.matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) close(); });
+</script>

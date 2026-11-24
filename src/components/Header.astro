@@ -1,5 +1,6 @@
 ---
 import { nav } from '../data/nav.js';
+import MobileMenu from './MobileMenu.astro';
 const { solid = false, current = '' } = Astro.props;
 ---
 <header class:list={['site-header', { solid }]}>
@@ -11,15 +12,7 @@ const { solid = false, current = '' } = Astro.props;
   </nav>
   <div style="display:flex;gap:10px;align-items:center">
     <a href="#newsletter" class="btn btn-red">Newsletter</a>
-    <button class="btn nav-toggle" aria-controls="main-nav" aria-expanded="false" style={solid ? '' : 'color:#fff;border-color:#fff'}>Menu</button>
+    <button class="btn nav-toggle" aria-controls="mobile-menu" aria-expanded="false" style={solid ? '' : 'color:#fff;border-color:#fff'}>Menu</button>
   </div>
 </header>
-<script>
-  document.querySelectorAll('.nav-toggle').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const navEl = document.getElementById('main-nav');
-      const open = navEl?.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  });
-</script>
+<MobileMenu current={current} />
