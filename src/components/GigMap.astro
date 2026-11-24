@@ -1,27 +1,35 @@
 ---
-import { gigs, gigWeek } from '../data/home.js';
+import { gigs, gigWeek, sceneLabels, thames, toMap } from '../data/home.js';
+// Thames path in the SVG's 400 x 300 space, from real coordinates.
+const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return `${i ? 'L' : 'M'}${(p.x * 4).toFixed(1)} ${(p.y * 3).toFixed(1)}`; }).join(' ');
 ---
 <section id="map" class="rule-b gm-inv" style="padding:28px 0 36px">
   <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:18px">
     <h2 class="label" style="margin:0;font-size:14px">Gig map · {gigs.length} picks this week</h2>
-    <span class="muted" style="font-size:12px">{gigWeek} · sample listings</span>
+    <span class="muted" style="font-size:12px">{gigWeek} · real listings, curated by Aerial</span>
+  </div>
+  <div class="gm-filters" role="group" aria-label="Filter by scene">
+    <button type="button" class="gm-chip" data-scene="all" aria-pressed="true">All {gigs.length}</button>
+    {Object.entries(sceneLabels).map(([k, label]) => (
+      <button type="button" class="gm-chip" data-scene={k} aria-pressed="false">{label} {gigs.filter((x) => x.scene === k).length}</button>
+    ))}
   </div>
   <div class="gm">
     <div class="gm-map" role="group" aria-label="Map of this week's picks">
       <svg viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 186 C 50 180, 90 168, 120 176 S 170 204, 200 196 S 236 172, 250 184 S 262 222, 284 222 S 312 196, 318 184 S 360 194, 400 190" fill="none" stroke="#2F4B60" stroke-width="16" stroke-linecap="round" />
-        <path d="M0 186 C 50 180, 90 168, 120 176 S 170 204, 200 196 S 236 172, 250 184 S 262 222, 284 222 S 312 196, 318 184 S 360 194, 400 190" fill="none" stroke="#D40000" stroke-width="1" stroke-dasharray="3 5" />
+        <path d={river} fill="none" stroke="#2F4B60" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+        <path d={river} fill="none" stroke="#D40000" stroke-width="1" stroke-dasharray="3 5" />
       </svg>
       <span class="gm-river">River Thames</span>
       {gigs.map((g, i) => (
-        <button class="gm-pin" data-i={i} style={`left:${g.x}%;top:${g.y}%`} aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`${g.day}: ${g.act} at ${g.venue}`}>
+        <button class="gm-pin" data-i={i} data-scene={g.scene} style={`left:${g.x}%;top:${g.y}%`} aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`${g.day}: ${g.act} at ${g.venue}`}>
           <span>{i + 1}</span><em class="gm-area">{g.area}</em>
         </button>
       ))}
     </div>
     <ol class="gm-list">
       {gigs.map((g, i) => (
-        <li>
+        <li data-scene={g.scene}>
           <button class="gm-row" data-i={i} aria-expanded={i === 0 ? 'true' : 'false'}>
             <span class="gm-n">{i + 1}</span>
             <span class="label" style="font-size:13px">{g.day} {g.time}</span>
@@ -31,8 +39,8 @@ import { gigs, gigWeek } from '../data/home.js';
           <div class="gm-detail" hidden={i !== 0}>
             <span class="muted" style="font-size:13px">{g.note}</span>
             <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
-              {g.tags.map((t) => <span class="tag">{t}</span>)}
-              <a class="btn btn-red" style="margin-left:auto;height:36px" href={g.url}>Tickets</a>
+              <span class="tag gm-scene">{sceneLabels[g.scene]}</span>{g.tags.map((t) => <span class="tag">{t}</span>)}
+              <a class="btn btn-red" style="margin-left:auto;height:36px" href={g.url} target="_blank" rel="noopener">Tickets ↗</a>
             </span>
           </div>
         </li>
@@ -49,7 +57,7 @@ import { gigs, gigWeek } from '../data/home.js';
   .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
   .gm-map { position: relative; aspect-ratio: 4 / 3; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; background: #1F1D1A; }
   .gm-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .gm-river { position: absolute; left: 3%; top: 66%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #8FB0C6; }
+  .gm-river { position: absolute; left: 3%; top: 72%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #8FB0C6; }
   .gm-pin { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 6px; border: 1px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
   .gm-pin span { width: 22px; height: 22px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 11px; }
   .gm-pin[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; z-index: 2; box-shadow: 0 6px 16px rgba(212,0,0,.35); }
@@ -61,9 +69,17 @@ import { gigs, gigWeek } from '../data/home.js';
   .gm-n { width: 24px; height: 24px; border-radius: 999px; border: 1px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--cond); font-weight: 700; font-size: 11px; }
   .gm-act { display: block; font-family: var(--cond); font-weight: 700; font-size: 16px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gm-detail { display: flex; flex-direction: column; gap: 10px; padding: 0 0 16px 40px; }
-  .gm-area { font-style: normal; }
+  .gm-area { font-style: normal; display: none; }
+  .gm-pin { padding: 0 6px; }
+  .gm-pin[aria-pressed="true"] { padding: 0 12px 0 6px; }
+  .gm-pin[aria-pressed="true"] .gm-area { display: inline; }
+  .gm-pin[hidden], .gm-list li[hidden] { display: none !important; }
+  .gm-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+  .gm-chip { height: 34px; padding: 0 14px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  .gm-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  .gm-inv .gm-scene { border-color: #FAF8F3; color: #FAF8F3; }
   @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } }
-  @media (max-width: 600px) { .gm-area { display: none; } .gm-pin { padding: 0; height: auto; border: 0; background: transparent; box-shadow: none; } .gm-pin span { width: 28px; height: 28px; font-size: 12px; } .gm-pin[aria-pressed="true"] { background: transparent; box-shadow: none; } .gm-pin[aria-pressed="true"] span { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(212,0,0,.5); } }
+  @media (max-width: 600px) { .gm-map { aspect-ratio: 1 / 1; } .gm-act { white-space: normal; } .gm-pin[aria-pressed="true"] .gm-area { display: none; } .gm-pin span { width: 24px !important; height: 24px !important; font-size: 11px !important; } .gm-area { display: none; } .gm-pin { padding: 0; height: auto; border: 0; background: transparent; box-shadow: none; } .gm-pin span { width: 28px; height: 28px; font-size: 12px; } .gm-pin[aria-pressed="true"] { background: transparent; box-shadow: none; } .gm-pin[aria-pressed="true"] span { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(212,0,0,.5); } }
 </style>
 
 <script>
@@ -77,4 +93,15 @@ import { gigs, gigWeek } from '../data/home.js';
     });
   };
   document.querySelectorAll('.gm-pin, .gm-row').forEach((el) => el.addEventListener('click', () => select((el as HTMLElement).dataset.i || '0')));
+  document.querySelectorAll<HTMLElement>('.gm-chip').forEach((chip) => chip.addEventListener('click', () => {
+    const scene = chip.dataset.scene || 'all';
+    document.querySelectorAll('.gm-chip').forEach((c) => c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'));
+    let first: string | null = null;
+    document.querySelectorAll<HTMLElement>('.gm-pin, .gm-list li').forEach((el) => {
+      const show = scene === 'all' || el.dataset.scene === scene;
+      el.hidden = !show;
+      if (show && !first && el.classList.contains('gm-pin')) first = el.dataset.i || null;
+    });
+    if (first) select(first);
+  }));
 </script>

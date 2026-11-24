@@ -37,7 +37,7 @@ export const mobileMenu = [
     { h: 'Features', items: [['Spotlights', n('interviews')], ['Long reads', n('interviews')], ['Thought', n('thought')]] } ] },
   { tab: 'Playlist', href: '/#playlist', intro: 'Fifty songs a month, picked by the writers.', groups: [
     { h: 'Listen', items: [['50 of the month', '/#playlist']] } ] },
-  { tab: 'Gig map', href: '/#map', intro: '5–10 hand-picked nights a week.', groups: [
+  { tab: 'Gig map', href: '/#map', intro: '15 hand-picked nights a week across dance, guitar and rap.', groups: [
     { h: 'Browse', items: [['This week', '/#map'], ['By night', '/#map'], ['By area', '/#map']] } ] },
   { tab: 'Quiz', href: '/#quiz', intro: 'Three questions, every morning.', groups: [
     { h: 'Play', items: [['Today’s quiz', '/#quiz']] } ] },
