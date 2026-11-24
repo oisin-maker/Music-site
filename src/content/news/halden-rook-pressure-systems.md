@@ -8,6 +8,7 @@ date: 2026-11-13
 author: "Aoife Kerr"
 tags: [Dub techno, Ambient]
 art: c
+image: "/images/photos/lasers.webp"
 sample: true
 ---
 

@@ -7,6 +7,7 @@ date: 2026-11-06
 author: "Aoife Kerr"
 tags: [Indie & guitar, Folk, Spotlight]
 art: f
+image: "/images/photos/bandbw.webp"
 sample: true
 ---
 

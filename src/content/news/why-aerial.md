@@ -6,6 +6,7 @@ date: 2026-11-23
 author: "Oisin & Alex"
 tags: [Manifesto, Small rooms]
 art: a
+image: "/images/photos/skyline.webp"
 ---
 
 ## The small rooms

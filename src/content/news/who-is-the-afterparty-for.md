@@ -7,6 +7,7 @@ date: 2026-11-09
 author: "Sam Okafor"
 tags: [Essay, Nightlife]
 art: d
+image: "/images/photos/latenight.webp"
 sample: true
 ---
 
