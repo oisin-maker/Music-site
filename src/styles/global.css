@@ -50,7 +50,10 @@ img { max-width: 100%; display: block; }
 .art img { width: 100%; height: 100%; object-fit: cover; }
 
 /* Full-bleed hero with transparent header */
-.hero { position: relative; color: #fff; }
+.hero { position: relative; color: #fff; display: grid; }
+/* Image and text share one grid cell: long titles grow the hero instead of rising into the header */
+.hero > .hero-img, .hero > .hero-body { grid-area: 1 / 1; }
+.hero > .hero-img { min-width: 0; }
 .hero-img {
   min-height: 82vh;
   background:
@@ -69,7 +72,7 @@ img { max-width: 100%; display: block; }
   }
 }
 .hero a:hover { color: #FFD1D1; }
-.hero-body { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 44px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
+.hero-body { position: relative; z-index: 1; margin: 0 var(--gutter); padding: 150px 0 44px; align-self: end; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
 .hero h1 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(48px, 8vw, 112px); line-height: 0.95; }
 .hero h1 em { font-weight: 400; color: rgba(255,255,255,.85); }
 .hero .score { font-family: var(--serif); font-weight: 700; font-size: clamp(72px, 10vw, 150px); line-height: 0.8; }
@@ -89,6 +92,7 @@ img { max-width: 100%; display: block; }
 .site-footer input { height: 44px; width: 280px; max-width: 100%; padding: 0 16px; border: 1px solid var(--paper); border-radius: 999px; background: transparent; color: var(--paper); font-family: var(--mono); font-size: 13px; }
 
 @media (max-width: 900px) {
+  .hero-body { padding-top: 120px; padding-bottom: 32px; }
   .site-header { grid-template-columns: 1fr auto; }
   .main-nav { display: none; }
   .nav-toggle { display: inline-flex; }
