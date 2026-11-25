@@ -1,0 +1,58 @@
+---
+// Layout for text pages (accessibility, inclusion, privacy).
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+const { title, intro, kicker = 'About Aerial', sections = [] } = Astro.props;
+---
+<Base title={`${title} — Aerial`} description={intro}>
+  <section class="hero page-hero" aria-label={title}>
+    <div class="hero-img" aria-hidden="true" style="min-height:40vh;--hero-image:none;--hero-bg:#141416"></div>
+    <Header current="" />
+    <div class="hero-body">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:900px">
+        <span class="label">{kicker}</span>
+        <h1>{title}</h1>
+        {intro && <p style="margin:0;max-width:720px;font-size:16px;line-height:1.65;color:rgba(255,255,255,.92)">{intro}</p>}
+      </div>
+    </div>
+  </section>
+  <div class="wrap" id="main" tabindex="-1">
+    <div class="page-layout rule-b">
+      {sections.length > 0 && (
+        <nav class="page-side" aria-label="On this page">
+          <div class="side-h">On this page</div>
+          {sections.map(([id, label]) => <a class="side-link" href={`#${id}`}>{label}</a>)}
+        </nav>
+      )}
+      <article class="page-prose">
+        <slot />
+      </article>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .page-hero h1 { font-size: clamp(44px, 7vw, 96px); }
+  .page-layout { display: grid; grid-template-columns: 220px minmax(0, 720px); gap: 56px; padding: 40px 0 64px; }
+  .page-side { position: sticky; top: 24px; align-self: start; display: flex; flex-direction: column; gap: 6px; }
+  .page-side .side-h { font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+  .page-side .side-link { font-size: 14px; padding: 4px 0; }
+  .page-prose { font-size: 16px; line-height: 1.75; }
+  .page-prose :global(h2) { font-family: var(--serif); font-size: 32px; line-height: 1.15; margin: 48px 0 14px; padding-top: 18px; border-top: 1px solid var(--red); scroll-margin-top: 24px; }
+  .page-prose :global(h2:first-child) { margin-top: 0; }
+  .page-prose :global(h3) { font-family: var(--cond); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin: 28px 0 8px; }
+  .page-prose :global(p), .page-prose :global(li) { max-width: 68ch; }
+  .page-prose :global(ul) { padding-left: 20px; }
+  .page-prose :global(li) { margin: 6px 0; }
+  .page-prose :global(a) { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
+  .page-prose :global(.callout) { margin: 20px 0; padding: 16px 18px; border: 1px solid var(--ink); border-radius: 8px; }
+  .page-prose :global(.legend) { display: grid; grid-template-columns: max-content 1fr; gap: 10px 16px; margin: 16px 0; }
+  .page-prose :global(.legend dt) { font-family: var(--cond); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-size: 13px; }
+  .page-prose :global(.legend dd) { margin: 0; }
+  .page-prose :global(.updated) { margin-top: 48px; font-size: 13px; color: var(--muted); }
+  @media (max-width: 900px) {
+    .page-layout { grid-template-columns: 1fr; gap: 24px; padding: 28px 0 48px; }
+    .page-side { position: static; flex-direction: row; flex-wrap: wrap; gap: 4px 16px; }
+    .page-side .side-h { flex-basis: 100%; }
+  }
+</style>

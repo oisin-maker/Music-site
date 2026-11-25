@@ -1,0 +1,78 @@
+---
+import Page from '../layouts/Page.astro';
+import { site } from '../data/site.js';
+import { accessLevels } from '../data/venueAccess.js';
+const sections = [
+  ['aim', 'Our aim'],
+  ['done', 'What we’ve done'],
+  ['known', 'What isn’t right yet'],
+  ['venues', 'Venue access info'],
+  ['resources', 'Useful services'],
+  ['contact', 'Tell us about a problem'],
+];
+---
+<Page
+  title="Accessibility"
+  intro="Nights out should be open to everyone, and so should the site that tells you about them. Here’s what we do, what we haven’t fixed yet, and how we check access at the venues we list."
+  sections={sections}
+>
+  <h2 id="aim">Our aim</h2>
+  <p>We want everyone to be able to read Aerial, use the gig map and decide whether a night will work for them, whatever device, browser or assistive technology they use.</p>
+  <p>We’re working towards the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA. We haven’t had the site independently audited yet, so we don’t claim to meet that standard. An audit, with testing by disabled people, is part of our plan for next year.</p>
+
+  <h2 id="done">What we’ve done</h2>
+  <ul>
+    <li>Every photo that carries meaning has a text description (alt text). Purely decorative images are hidden from screen readers.</li>
+    <li>A “Skip to content” link is the first thing you reach with a keyboard.</li>
+    <li>The menu, gig map, filters and quiz all work with a keyboard. Press Escape to close the mobile menu.</li>
+    <li>The gig map has a full written list beside it, so you never need to use the map pins.</li>
+    <li>Every gig listing shows the venue’s access information, and you can filter to step-free venues only.</li>
+    <li>Access labels use words and symbols as well as colour.</li>
+    <li>The layout reflows on small screens and when you zoom in.</li>
+    <li>Animations are switched off if you’ve asked your device to reduce motion.</li>
+    <li>Fonts are hosted on our own site, so pages load quickly and work on slow connections.</li>
+  </ul>
+
+  <h2 id="known">What isn’t right yet</h2>
+  <p>We’d rather tell you than have you find out. These are the problems we know about:</p>
+  <ul>
+    <li><strong>Colour contrast.</strong> Some small red text on black backgrounds may not have enough contrast. We’re reviewing every combination.</li>
+    <li><strong>Text over photos.</strong> Headlines sit on photos with a dark fade. On some images parts of the text may be harder to read.</li>
+    <li><strong>Body font.</strong> Our body text uses a monospaced font, which some readers find harder to read at length. We’re testing a more readable option and a larger-text setting.</li>
+    <li><strong>Map pins.</strong> Pins for venues close together can overlap. The written list is complete and is the best way to browse.</li>
+    <li><strong>Links to other sites.</strong> Ticket sites and venue pages aren’t ours and may not be accessible.</li>
+  </ul>
+
+  <h2 id="venues">Venue access information</h2>
+  <p>Every gig on our map shows what we could find out about getting in and around the venue. Many small venues are in old buildings, and some don’t publish access information at all. We think you should know before you buy a ticket, not at the door.</p>
+  <h3>The labels we use</h3>
+  <dl class="legend">
+    <dt><span aria-hidden="true">{accessLevels['step-free'].icon}</span> Step-free</dt><dd>You can reach the room the event is in without steps, according to the source we checked.</dd>
+    <dt><span aria-hidden="true">{accessLevels.partial.icon}</span> Partly step-free</dt><dd>Some areas are step-free and others aren’t, or access depends on a lift or on staff helping.</dd>
+    <dt><span aria-hidden="true">{accessLevels.no.icon}</span> Not step-free</dt><dd>The event room is reached by stairs only.</dd>
+    <dt><span aria-hidden="true">{accessLevels.unknown.icon}</span> Not published</dt><dd>We couldn’t find access information. We say so rather than guess.</dd>
+  </dl>
+  <h3>How we check</h3>
+  <ul>
+    <li>We look first at the venue’s own access page, then at independent guides such as AccessAble, Euan’s Guide and Attitude is Everything, then at reputable listings.</li>
+    <li>Each listing names its source and the date we checked it.</li>
+    <li>We include practical details where they’re published: carer and personal assistant tickets, accessible toilets, hearing loops, quiet spaces and who to contact.</li>
+    <li>Access changes. Lifts break and shows move rooms. Always confirm with the venue before you go.</li>
+  </ul>
+  <div class="callout">
+    <strong>Run a venue?</strong> If our information about you is wrong or out of date, email <a href={`mailto:${site.email}?subject=Venue%20access%20update`}>{site.email}</a> and we’ll update it within five working days. If you don’t have an access page yet, Attitude is Everything has free guidance on writing one.
+  </div>
+
+  <h2 id="resources">Useful services</h2>
+  <ul>
+    <li><a href="https://www.attitudeiseverything.org.uk/" rel="noopener">Attitude is Everything</a>: improves deaf and disabled people’s access to live music, and runs the Live Events Access Charter.</li>
+    <li><a href="https://www.accesscard.online/" rel="noopener">Access Card</a>: one card to show venues your access needs, including a +1 for a free companion ticket where offered.</li>
+    <li><a href="https://www.euansguide.com/" rel="noopener">Euan’s Guide</a>: access reviews written by disabled people.</li>
+    <li><a href="https://www.accessable.co.uk/" rel="noopener">AccessAble</a>: detailed, surveyed access guides to venues across London.</li>
+    <li><a href="https://tfl.gov.uk/transport-accessibility/" rel="noopener">TfL transport accessibility</a>: step-free Tube maps and help getting there and home.</li>
+  </ul>
+
+  <h2 id="contact">Tell us about a problem</h2>
+  <p>If something on Aerial doesn’t work for you, or you need information in a different format, email <a href={`mailto:${site.email}?subject=Accessibility`}>{site.email}</a>. Tell us the page and what went wrong. We’ll reply within five working days.</p>
+  <p class="updated">Last reviewed {site.lastReviewed}.</p>
+</Page>

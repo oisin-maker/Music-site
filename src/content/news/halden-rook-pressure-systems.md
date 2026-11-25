@@ -9,6 +9,7 @@ author: "Aoife Kerr"
 tags: [Dub techno, Ambient]
 art: c
 image: "/images/photos/halden.webp"
+imageAlt: "A musician in a white shirt and black trousers carries a double bass, seen from behind against a pale grey background"
 heroSize: "auto 120%"
 heroPos: "74% 30%"
 heroBg: "#E8E8E6"

@@ -17,7 +17,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
 ---
 <Base>
   <section class="hero" aria-label="Featured">
-    <a href={`/news/${featured.slug}`} class="hero-img" style={'display:block;' + heroStyle(featured)} aria-label={`Read: ${featured.title}`}></a>
+    <a href={`/news/${featured.slug}`} class="hero-img" style={'display:block;' + heroStyle(featured)} aria-label={`Read: ${featured.title}. Photo: ${featured.imageAlt || ''}`}></a>
     <Header />
     <div class="hero-body">
       <div style="display:flex;flex-direction:column;gap:16px;max-width:980px">
@@ -32,7 +32,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
     </div>
   </section>
 
-  <div class="wrap">
+  <div class="wrap" id="main" tabindex="-1">
     <section id="manifesto" class="two-col rule-b">
       <div class="label label-red col-l">What we stand for</div>
       <div class="col-r" style="display:flex;flex-direction:column;gap:20px">
@@ -53,7 +53,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
         {latest.map((a) => (
           <a href={`/news/${a.slug}`} class="tile">
             <span class={`art art-${a.art || 'a'}`} style="aspect-ratio:1/1">
-              {a.image && <img src={a.image} alt="" loading="lazy" />}
+              {a.image && <img src={a.image} alt={a.imageAlt || ""} loading="lazy" />}
               {a.score && <span class="badge">{a.score}</span>}
             </span>
             <span class="muted" style="font-size:11px">{fmt(a.date)} · {a.author}</span>
@@ -76,7 +76,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
         {playlist.embedUrl
           ? <iframe title={playlist.title} src={playlist.embedUrl} width="100%" height="380" style="border:0;border-radius:8px" loading="lazy" allow="encrypted-media"></iframe>
           : <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:8px;background:var(--ink);color:var(--paper)">
-              <span class="art art-c" style="flex:none;width:88px;height:88px"><img src="/images/photos/studio.webp" alt="" loading="lazy" /></span>
+              <span class="art art-c" style="flex:none;width:88px;height:88px"><img src="/images/photos/studio.webp" alt="Black-and-white photo of two people in a home studio, one at a keyboard and screen, one standing by the speakers" loading="lazy" /></span>
               <span style="display:flex;flex-direction:column;gap:6px"><span class="serif" style="font-weight:700;font-size:22px">{playlist.title}</span><span style="font-size:12px;color:#B9B2A8">Add a Spotify or Apple Music embed URL in src/data/home.js</span></span>
             </div>}
       </div>

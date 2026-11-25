@@ -1,0 +1,63 @@
+---
+import Page from '../layouts/Page.astro';
+import { site } from '../data/site.js';
+const sections = [
+  ['for', 'Who Aerial is for'],
+  ['cover', 'What we cover'],
+  ['writers', 'Who writes for us'],
+  ['standards', 'What we won’t publish'],
+  ['safer', 'Safer nights'],
+  ['accountable', 'Holding ourselves to it'],
+];
+---
+<Page
+  title="Inclusion"
+  intro="London’s small rooms are where scenes start, and they only work when everyone feels they belong in them. This is how we try to make Aerial reflect the whole city, and how you can hold us to it."
+  sections={sections}
+>
+  <h2 id="for">Who Aerial is for</h2>
+  <p>Anyone who loves going out in London, or wants to. Whether you’ve been raving for twenty years or you’re looking for your first gig, whoever you are and wherever you live in the city, Aerial is for you.</p>
+  <p>Nightlife has always been a refuge for people who don’t fit elsewhere: queer people, migrants, young people, working-class kids, people the daytime city overlooks. We want our coverage to protect that, not price it out or write it out.</p>
+
+  <h2 id="cover">What we cover</h2>
+  <ul>
+    <li><strong>Three scenes, given equal weight.</strong> Dance and electronic, guitar and bands, and rap, grime and drill. Rap, grime and drill are often under-covered and over-policed, so we won’t treat them as an afterthought.</li>
+    <li><strong>Small rooms first.</strong> We prioritise grassroots venues, independent promoters and new artists over big rooms and big names.</li>
+    <li><strong>Nights people can afford.</strong> We look for free and cheap events every week and say clearly what things cost.</li>
+    <li><strong>All of London.</strong> Not just a few postcodes. We look north, south, east and west, and beyond zone 2.</li>
+    <li><strong>Nights made by and for under-represented communities.</strong> We actively seek out LGBTQ+ nights, women- and non-binary-led nights, and nights run by and for people of colour, disabled people and migrant communities.</li>
+    <li><strong>Access first.</strong> Every gig we list shows the venue’s access information. Read more on our <a href="/accessibility">accessibility page</a>.</li>
+  </ul>
+
+  <h2 id="writers">Who writes for us</h2>
+  <ul>
+    <li><strong>We pay our writers and photographers.</strong> Always, and we publish our rates.</li>
+    <li><strong>An open call, not a closed circle.</strong> You don’t need contacts or a portfolio. We prioritise first-time writers and people from groups that are under-represented in music journalism, and we give editing support.</li>
+    <li><strong>People who know the scene.</strong> We’d rather a review came from someone who was in the room, and who knows the scene, than from someone passing through.</li>
+  </ul>
+  <p>Want to write for us? Email <a href={`mailto:${site.email}?subject=Writing%20for%20Aerial`}>{site.email}</a> with an idea. A few lines is enough.</p>
+
+  <h2 id="standards">What we won’t publish</h2>
+  <ul>
+    <li>Anything that demeans people for their race, ethnicity, religion, gender, sexuality, disability, age or class.</li>
+    <li>Coverage that glamorises drug use. We write honestly about nightlife, and we put safety first.</li>
+    <li>Reviews that punch down at audiences, small promoters or venue staff.</li>
+    <li>Paid content dressed up as editorial. Anything sponsored will be clearly labelled.</li>
+  </ul>
+  <p>When we get something wrong, we correct it openly and say what changed.</p>
+
+  <h2 id="safer">Safer nights</h2>
+  <p>A good night out is one where everyone gets home safe. Some things worth knowing:</p>
+  <ul>
+    <li><strong>Ask for Angela.</strong> At many London bars and venues, asking staff for “Angela” tells them you feel unsafe and need help, discreetly.</li>
+    <li><strong>Welfare teams.</strong> Many clubs have welfare or first-aid staff. Find out where they are when you arrive.</li>
+    <li><strong>Harassment on public transport.</strong> Text British Transport Police on 61016. In an emergency, always call 999.</li>
+    <li><strong>Getting home.</strong> Plan your route before you go, including night buses and the Night Tube. <a href="https://tfl.gov.uk/" rel="noopener">TfL</a> has live journey planning.</li>
+    <li><strong>Drugs.</strong> If you’re worried about yourself or a friend, <a href="https://www.talktofrank.com/" rel="noopener">FRANK</a> gives free, confidential advice. If someone is unwell, get help from welfare staff or call 999.</li>
+  </ul>
+
+  <h2 id="accountable">Holding ourselves to it</h2>
+  <p>Each year we’ll publish a short report on who we covered and who we paid: the balance across our three scenes, venue sizes, areas of London, and (with contributors’ consent) who writes for us. Where we’re falling short, we’ll say so, and say what we’re changing.</p>
+  <p>If you think we’re missing a scene, a community or a part of the city, tell us: <a href={`mailto:${site.email}?subject=Inclusion`}>{site.email}</a>.</p>
+  <p class="updated">Last reviewed {site.lastReviewed}.</p>
+</Page>

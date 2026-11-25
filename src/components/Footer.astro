@@ -4,12 +4,13 @@ import { footerLinks } from '../data/nav.js';
 <footer id="newsletter" class="site-footer">
   <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px;padding-bottom:32px;border-bottom:1px solid var(--red)">
     <span class="logo">Aerial</span>
-    <form style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end" action="#" method="post" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks!';">
+    <form style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end" action="#" method="post" onsubmit="event.preventDefault(); this.querySelector('.nl-note').textContent='The newsletter isn’t live yet, so we haven’t stored your email. Check back soon.';">
       <label class="label" style="display:flex;flex-direction:column;gap:6px;font-size:12px">
         Weekly newsletter
         <input type="email" name="email" required placeholder="you@example.com" />
       </label>
       <button class="btn btn-red" type="submit">Subscribe</button>
+      <span class="nl-note" role="status" style="flex-basis:100%;font-size:12px;color:#B9B2A8">Coming soon. See our <a href="/privacy" style="text-decoration:underline">privacy notice</a>.</span>
     </form>
   </div>
   <div class="label" style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;padding-top:20px;font-size:12px">

@@ -1,0 +1,52 @@
+---
+import Page from '../layouts/Page.astro';
+import { site } from '../data/site.js';
+const sections = [
+  ['summary', 'In short'],
+  ['collect', 'What we collect'],
+  ['hosting', 'Hosting'],
+  ['newsletter', 'The newsletter'],
+  ['email', 'If you email us'],
+  ['links', 'Other websites'],
+  ['rights', 'Your rights'],
+  ['changes', 'Changes'],
+];
+---
+<Page
+  title="Privacy"
+  kicker="Your data"
+  intro="We collect as little as possible. No cookies, no tracking, no ads following you around. Here’s exactly what happens when you use Aerial."
+  sections={sections}
+>
+  <h2 id="summary">In short</h2>
+  <ul>
+    <li>We don’t use cookies.</li>
+    <li>We don’t use analytics or tracking tools, and we don’t run ads that track you.</li>
+    <li>We don’t have accounts or logins, and we don’t sell or share personal data.</li>
+    <li>Our fonts and images are hosted on our own site, so reading Aerial doesn’t send your details to Google or other third parties.</li>
+  </ul>
+  <p>This notice explains how {site.controller} (“we”) handle personal data under UK data protection law (the UK GDPR and the Data Protection Act 2018). For any privacy question, email <a href={`mailto:${site.email}?subject=Privacy`}>{site.email}</a>.</p>
+
+  <h2 id="collect">What we collect</h2>
+  <p>When you simply read Aerial, we don’t collect anything that identifies you. The gig map filters and quiz run in your browser and nothing is stored or sent to us.</p>
+
+  <h2 id="hosting">Hosting</h2>
+  <p>Aerial is hosted by Netlify. Like any web host, Netlify’s servers process technical information when you visit, such as your IP address, browser type and the pages you request. They need this to deliver the site and protect it from attacks. We don’t use this information to identify you. Netlify may process it outside the UK under its own safeguards. See <a href="https://www.netlify.com/privacy/" rel="noopener">Netlify’s privacy policy</a>.</p>
+
+  <h2 id="newsletter">The newsletter</h2>
+  <p>The newsletter isn’t live yet, and the sign-up form doesn’t store anything. When it launches, we’ll update this page before we collect any emails. We’ll ask for your email address only, use it only to send the newsletter, name the service we use to send it, and let you unsubscribe with one click.</p>
+
+  <h2 id="email">If you email us</h2>
+  <p>If you email us, for example to pitch a piece, correct venue information or report a problem, we’ll use your email and what you send only to reply and act on it. We delete messages we no longer need, and at the latest after two years.</p>
+
+  <h2 id="links">Other websites</h2>
+  <p>We link to ticket sites, venues and other music publications. When you follow a link, that site’s own privacy policy applies. Our share links only open the other service when you click them.</p>
+
+  <h2 id="rights">Your rights</h2>
+  <p>You can ask us to show you any personal data we hold about you, correct it, delete it, or stop using it. Email <a href={`mailto:${site.email}?subject=Data%20request`}>{site.email}</a> and we’ll respond within one month.</p>
+  <p>If you’re unhappy with how we’ve handled your data, you can complain to the Information Commissioner’s Office at <a href="https://ico.org.uk/make-a-complaint/" rel="noopener">ico.org.uk</a>.</p>
+
+  <h2 id="changes">Changes</h2>
+  <p>We’ll update this page whenever what we collect changes, for example when the newsletter launches, and change the date below.</p>
+  <p class="updated">Last updated {site.lastReviewed}.</p>
+</Page>

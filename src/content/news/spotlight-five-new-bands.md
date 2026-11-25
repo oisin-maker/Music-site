@@ -8,6 +8,7 @@ author: "Aoife Kerr"
 tags: [Indie & guitar, Folk, Spotlight]
 art: f
 image: "/images/photos/bandbw.webp"
+imageAlt: "Black-and-white photo of a band playing under stage lights and smoke, with the crowd silhouetted in front"
 sample: true
 ---
 

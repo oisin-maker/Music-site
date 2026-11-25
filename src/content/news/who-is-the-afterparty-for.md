@@ -8,6 +8,7 @@ author: "Sam Okafor"
 tags: [Essay, Nightlife]
 art: d
 image: "/images/photos/latenight.webp"
+imageAlt: "People sitting in a red-lit bar at night, seen through the window from the street"
 sample: true
 ---
 

@@ -139,3 +139,9 @@ img { max-width: 100%; display: block; }
 .mm .mm-links a { color: var(--muted); min-height: 32px; display: inline-flex; align-items: center; }
 @media (min-width: 901px) { .mm { display: none !important; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* Accessibility helpers */
+.skip-link { position: absolute; left: 12px; top: -60px; z-index: 100; padding: 10px 16px; background: var(--ink); color: var(--paper); border-radius: 999px; font-family: var(--cond); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.skip-link:focus { top: 12px; }
+:focus-visible { outline: 3px solid #FFB800; outline-offset: 2px; }
+[tabindex="-1"]:focus { outline: none; }

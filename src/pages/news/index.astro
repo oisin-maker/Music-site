@@ -9,7 +9,7 @@ const { items: wire, live } = await getWireItems();
 
 // One list: our articles (internal) + The Wire (external), newest first.
 const entries = [
-  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Aerial', badge: 'AE', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, image: a.image, score: a.score })),
+  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Aerial', badge: 'AE', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, image: a.image, imageAlt: a.imageAlt, score: a.score })),
   ...wire.map((w) => ({ kind: 'wire', section: 'wire', source: w.source, badge: w.badge, title: w.title, excerpt: w.excerpt, url: w.url, date: w.date })),
 ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
@@ -18,7 +18,7 @@ const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', lab
 ---
 <Base title="News — Aerial">
   <section class="hero" aria-label="News">
-    <div class="hero-img" style="min-height:52vh;--hero-image:url(/images/photos/towerbridge.webp);--hero-size:cover"></div>
+    <div class="hero-img" role="img" aria-label="Tower Bridge and the Thames at dusk from above, with the Tower of London and HMS Belfast lit up" style="min-height:52vh;--hero-image:url(/images/photos/towerbridge.webp);--hero-size:cover"></div>
     <Header current="News" />
     <div class="hero-body">
       <div style="display:flex;flex-direction:column;gap:12px">
@@ -28,7 +28,7 @@ const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', lab
     </div>
   </section>
 
-  <div class="wrap">
+  <div class="wrap" id="main" tabindex="-1">
     <div class="news-layout rule-b">
       <aside class="news-side" aria-label="News navigation">
         <nav aria-label="Sections">
@@ -62,7 +62,7 @@ const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', lab
             <li class="news-item" data-section={e.section} data-source={e.source}>
               <a href={e.url} target={e.kind === 'wire' ? '_blank' : undefined} rel={e.kind === 'wire' ? 'noopener' : undefined} class="news-row">
                 {e.kind === 'own'
-                  ? <span class={`art art-${e.art || 'a'}`} style="aspect-ratio:1/1">{e.image && <img src={e.image} alt="" loading="lazy" />}</span>
+                  ? <span class={`art art-${e.art || 'a'}`} style="aspect-ratio:1/1">{e.image && <img src={e.image} alt={e.imageAlt || ""} loading="lazy" />}</span>
                   : <span class="src-badge">{e.badge}</span>}
                 <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
                   <span class="label" style="font-size:11px"><span class="label-red">{e.kind === 'own' ? e.section : e.source}</span> <span class="muted">· {formatDate(e.date)}{e.author ? ` · ${e.author}` : ''}</span></span>

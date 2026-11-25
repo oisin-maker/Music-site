@@ -13,6 +13,9 @@ export const nav = [
 export const footerLinks = [
   { label: 'About', href: '/#manifesto' },
   { label: 'Manifesto', href: '/#manifesto' },
+  { label: 'Inclusion', href: '/inclusion' },
+  { label: 'Accessibility', href: '/accessibility' },
+  { label: 'Privacy', href: '/privacy' },
   { label: 'Write for us', href: 'mailto:hello@example.com' },
   { label: 'List your venue', href: 'mailto:hello@example.com' },
   { label: 'Advertise', href: 'mailto:hello@example.com' },

@@ -4,6 +4,7 @@
 // Each pick has a lat/lng; the map converts it to a position (see toMap below).
 // Sources checked 24 Nov 2026: Songkick, DICE/RA event pages via listings sites, Skiddle, WeGotTickets, Ents24.
 // Re-check before publishing: line-ups and prices change.
+import { venueAccess } from './venueAccess.js';
 export const gigWeek = 'Mon 23 – Sat 28 November';
 // Tall frame (about 4:5) centred on the Thames, so the map can run the length of the list.
 export const BOUNDS = { west: -0.175, east: 0.03, north: 51.58, south: 51.42 };
@@ -12,7 +13,7 @@ export const toMap = (lat, lng) => ({
   y: Math.round(((BOUNDS.north - lat) / (BOUNDS.north - BOUNDS.south)) * 1000) / 10,
 });
 // `nudge` [dx, dy] in % separates pins for venues that sit very close together.
-const g = (o) => { const p = toMap(o.lat, o.lng); const [dx, dy] = o.nudge || [0, 0]; return { ...o, x: p.x + dx, y: p.y + dy }; };
+const g = (o) => { const p = toMap(o.lat, o.lng); const [dx, dy] = o.nudge || [0, 0]; return { ...o, x: p.x + dx, y: p.y + dy, access: venueAccess[o.venue] || { level: 'unknown', summary: 'We haven’t checked access for this venue yet.', extras: [], source: null } }; };
 export const gigs = [
   g({ scene: 'bands', day: 'Mon 23', time: '19:00', act: 'Dea Matrona', venue: 'Islington Assembly Hall', area: 'Islington', price: 'See listing', note: 'Belfast rock trio on a 900-cap Upper Street stage.', tags: ['Rock', 'Live'], lat: 51.5395, lng: -0.1033, url: 'https://www.songkick.com/concerts/43258059-dea-matrona-at-islington-assembly-hall' }),
   g({ scene: 'bands', day: 'Tue 24', time: '19:30', act: 'Requin Chagrin', venue: 'The Lexington', area: 'Angel', price: 'See listing', note: 'French surf-pop and shoegaze in a 200-cap upstairs room.', tags: ['Indie', 'Shoegaze'], lat: 51.5313, lng: -0.1121, url: 'https://www.songkick.com/de/concerts/43321805-requin-chagrin-at-lexington' }),

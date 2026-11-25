@@ -18,7 +18,7 @@ const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'N
 ---
 <Base title={`${article.title} — Aerial`} description={article.standfirst}>
   <section class="hero" aria-label="Article header">
-    <div class="hero-img" role="img" aria-label="Article image" style={heroStyle(article)}></div>
+    <div class="hero-img" role={article.image ? "img" : undefined} aria-label={article.image ? (article.imageAlt || "Article photo") : undefined} aria-hidden={article.image ? undefined : "true"} style={heroStyle(article)}></div>
     <Header current={sectionLabel} />
     <div class="hero-body">
       <div style="display:flex;flex-direction:column;gap:16px;max-width:980px">
@@ -31,7 +31,7 @@ const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'N
     </div>
   </section>
 
-  <div class="wrap">
+  <div class="wrap" id="main" tabindex="-1">
     {article.sample && <p class="muted rule-b" style="margin:0;padding:10px 0;font-size:12px">Sample article showing the layout.</p>}
     <div class="article-layout rule-b">
       <aside class="a-side" aria-label="Article navigation">

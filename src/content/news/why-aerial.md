@@ -7,6 +7,7 @@ author: "Oisin & Alex"
 tags: [Manifesto, Small rooms]
 art: a
 image: "/images/photos/citynight.webp"
+imageAlt: "The City of London at night from above, office towers lit up and streets glowing orange"
 ---
 
 ## The small rooms
