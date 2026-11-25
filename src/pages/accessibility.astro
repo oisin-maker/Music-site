@@ -24,7 +24,10 @@ const sections = [
   <ul>
     <li>Every photo that carries meaning has a text description (alt text). Purely decorative images are hidden from screen readers.</li>
     <li>A “Skip to content” link is the first thing you reach with a keyboard.</li>
-    <li>The menu, gig map, filters and quiz all work with a keyboard. Press Escape to close the mobile menu.</li>
+    <li>The menu, gig map, filters and quiz all work with a keyboard. While the mobile menu is open, focus stays inside it; press Escape to close it.</li>
+    <li>A two-tone focus outline (black and amber) shows where you are on both light and dark backgrounds.</li>
+    <li>Quiz answers and results are announced to screen readers.</li>
+    <li>Headlines over photos sit on a dark fade, so they stay readable on light images.</li>
     <li>The gig map has a full written list beside it, so you never need to use the map pins.</li>
     <li>Every gig listing shows the venue’s access information, and you can filter to step-free venues only.</li>
     <li>Access labels use words and symbols as well as colour.</li>
@@ -36,10 +39,10 @@ const sections = [
   <h2 id="known">What isn’t right yet</h2>
   <p>We’d rather tell you than have you find out. These are the problems we know about:</p>
   <ul>
-    <li><strong>Colour contrast.</strong> Some small red text on black backgrounds may not have enough contrast. We’re reviewing every combination.</li>
-    <li><strong>Text over photos.</strong> Headlines sit on photos with a dark fade. On some images parts of the text may be harder to read.</li>
+    <li><strong>Small text.</strong> Some labels and details are set at 11–12px. We’re moving everything people need to read to at least 14px.</li>
     <li><strong>Body font.</strong> Our body text uses a monospaced font, which some readers find harder to read at length. We’re testing a more readable option and a larger-text setting.</li>
-    <li><strong>Map pins.</strong> Pins for venues close together can overlap. The written list is complete and is the best way to browse.</li>
+    <li><strong>The map itself.</strong> Map pins are for mouse and touch users. Keyboard and screen-reader users get the same information, in full, from the list beside it.</li>
+    <li><strong>Page structure.</strong> Pages don’t yet mark their main content area, which some screen-reader shortcuts rely on.</li>
     <li><strong>Links to other sites.</strong> Ticket sites and venue pages aren’t ours and may not be accessible.</li>
   </ul>
 

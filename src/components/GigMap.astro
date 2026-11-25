@@ -31,8 +31,8 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
       </svg>
       <span class="gm-river">River Thames</span>
       {gigs.map((g, i) => (
-        <button class="gm-pin" data-i={i} data-scene={g.scene} data-access={g.access.level} style={`left:${g.x}%;top:${g.y}%`} aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`${g.day}: ${g.act} at ${g.venue}`}>
-          <span>{i + 1}</span><em class="gm-area">{g.area}</em>
+        <button class="gm-pin" data-i={i} data-scene={g.scene} data-access={g.access.level} style={`left:${g.x}%;top:${g.y}%`} aria-pressed={i === 0 ? 'true' : 'false'} tabindex="-1" aria-label={`${i + 1}. ${g.day}: ${g.act} at ${g.venue}`}>
+          <span>{i + 1}</span>
         </button>
       ))}
     </div>
@@ -75,7 +75,7 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-lanes path { fill: none; stroke: #FAF8F3; stroke-opacity: 0.16; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
   .gm-roads path { fill: none; stroke: #FAF8F3; stroke-opacity: 0.32; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
   .gm-river { position: absolute; left: 3%; top: 62%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #8FB0C6; }
-  .gm-pin { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 6px; border: 1px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+  .gm-pin { position: absolute; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))); display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 6px; border: 1px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
   .gm-pin span { width: 22px; height: 22px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 11px; }
   .gm-pin[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; z-index: 2; box-shadow: 0 6px 16px rgba(212,0,0,.35); }
   .gm-pin[aria-pressed="true"] span { background: #fff; color: var(--red); }
@@ -88,8 +88,7 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-detail { display: flex; flex-direction: column; gap: 10px; padding: 0 0 16px 40px; }
   .gm-area { font-style: normal; display: none; }
   .gm-pin { padding: 0 6px; }
-  .gm-pin[aria-pressed="true"] { padding: 0 12px 0 6px; }
-  .gm-pin[aria-pressed="true"] .gm-area { display: inline; }
+  .gm-pin[aria-pressed="true"] { padding: 0 6px; }
   .gm-pin[hidden], .gm-list > li[hidden] { display: none !important; }
   .gm-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
   .gm-chip { height: 34px; padding: 0 14px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
@@ -115,6 +114,33 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
     });
   };
   document.querySelectorAll('.gm-pin, .gm-row').forEach((el) => el.addEventListener('click', () => select((el as HTMLElement).dataset.i || '0')));
+  // Push apart pins that sit too close together, so every pin has a clear tap target (WCAG 2.5.8).
+  const spreadPins = () => {
+    const map = document.querySelector<HTMLElement>('.gm-map');
+    if (!map) return;
+    const pins = Array.from(map.querySelectorAll<HTMLElement>('.gm-pin')).filter((p) => !p.hidden);
+    const W = map.clientWidth, H = map.clientHeight;
+    const pts = pins.map((p) => ({ p, x: (parseFloat(p.style.left) / 100) * W, y: (parseFloat(p.style.top) / 100) * H, dx: 0, dy: 0 }));
+    const gap = (pins[0]?.offsetWidth || 28) + 6;
+    for (let it = 0; it < 60; it++) {
+      let moved = false;
+      for (let a = 0; a < pts.length; a++) for (let b = a + 1; b < pts.length; b++) {
+        const A = pts[a], B = pts[b];
+        let vx = (B.x + B.dx) - (A.x + A.dx), vy = (B.y + B.dy) - (A.y + A.dy);
+        let d = Math.hypot(vx, vy);
+        if (d >= gap) continue;
+        if (d < 0.01) { vx = 1; vy = 0; d = 1; }
+        const push = (gap - d) / 2;
+        A.dx -= (vx / d) * push; A.dy -= (vy / d) * push;
+        B.dx += (vx / d) * push; B.dy += (vy / d) * push;
+        moved = true;
+      }
+      if (!moved) break;
+    }
+    pts.forEach(({ p, dx, dy }) => { p.style.setProperty('--dx', `${dx.toFixed(1)}px`); p.style.setProperty('--dy', `${dy.toFixed(1)}px`); });
+  };
+  spreadPins();
+  window.addEventListener('resize', spreadPins);
   let scene = 'all';
   let stepFreeOnly = false;
   const applyFilters = () => {
@@ -125,6 +151,7 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
       if (show && !first && el.classList.contains('gm-pin')) first = el.dataset.i || null;
     });
     if (first) select(first);
+    spreadPins();
   };
   document.querySelectorAll<HTMLElement>('.gm-chip[data-scene]').forEach((chip) => chip.addEventListener('click', () => {
     scene = chip.dataset.scene || 'all';

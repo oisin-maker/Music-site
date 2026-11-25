@@ -11,8 +11,9 @@ const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'n
   </div>
   <div class="quiz-play">
     <span class="label label-red quiz-scene" style="font-size:11px"></span>
-    <p class="quiz-q"></p>
+    <p class="quiz-q" tabindex="-1"></p>
     <div class="quiz-opts"></div>
+    <p class="quiz-status sr-only" role="status" aria-live="polite"></p>
     <div class="quiz-after" hidden>
       <span class="quiz-explain"></span>
       <button class="btn btn-red quiz-next" type="button">Next question</button>
@@ -60,6 +61,7 @@ const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'n
       $('.quiz-q').textContent = q.prompt;
       const sc = root.querySelector('.quiz-scene'); if (sc) sc.textContent = q.scene || '';
       $('.quiz-after').hidden = true;
+      $('.quiz-status').textContent = '';
       const opts = $('.quiz-opts');
       opts.innerHTML = '';
       q.options.forEach((text, j) => {
@@ -77,16 +79,23 @@ const today = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'n
           $('.quiz-explain').textContent = q.explain;
           $('.quiz-next').textContent = i === qs.length - 1 ? 'See score' : 'Next question';
           $('.quiz-after').hidden = false;
+          // Tell screen-reader users the result, then put focus on the next step.
+          const verdict = j === q.answer ? 'Correct.' : `Not quite. The answer is ${q.options[q.answer]}.`;
+          $('.quiz-status').textContent = `${verdict} ${q.explain}`;
+          $('.quiz-next').focus();
         });
         opts.appendChild(b);
       });
     };
     $('.quiz-next').addEventListener('click', () => {
-      if (i < qs.length - 1) { i++; render(); return; }
+      if (i < qs.length - 1) { i++; render(); $('.quiz-q').focus(); return; }
       $('.quiz-play').hidden = true;
       $('.quiz-done').hidden = false;
       $('.quiz-progress').textContent = `${qs.length} / ${qs.length}`;
       $('.quiz-score').textContent = `You scored ${score} out of ${qs.length}.`;
+      $('.quiz-status').textContent = `Quiz finished. You scored ${score} out of ${qs.length}.`;
+      $('.quiz-score').setAttribute('tabindex', '-1');
+      $('.quiz-score').focus();
     });
     $('.quiz-restart').addEventListener('click', () => {
       i = 0; score = 0;

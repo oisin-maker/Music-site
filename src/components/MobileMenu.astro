@@ -59,10 +59,19 @@ const icon = {
 
 <script>
   const menu = document.getElementById('mobile-menu');
+  // Move the dialog to the top level of the page, so everything else can be made inert while it's open.
+  if (menu && menu.parentElement !== document.body) document.body.appendChild(menu);
   let opener: HTMLElement | null = null;
+  const setBackground = (inert: boolean) => {
+    Array.from(document.body.children).forEach((el) => {
+      if (el === menu || el.tagName === 'SCRIPT') return;
+      if (inert) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+    });
+  };
   const close = () => {
     if (!menu || menu.hidden) return;
     menu.hidden = true;
+    setBackground(false);
     document.documentElement.classList.remove('mm-lock');
     document.querySelectorAll('.nav-toggle').forEach((b) => b.setAttribute('aria-expanded', 'false'));
     opener?.focus();
@@ -71,6 +80,7 @@ const icon = {
     if (!menu) return;
     opener = btn;
     menu.hidden = false;
+    setBackground(true);
     document.documentElement.classList.add('mm-lock');
     btn.setAttribute('aria-expanded', 'true');
     (menu.querySelector('[data-mm-close]') as HTMLElement | null)?.focus();
