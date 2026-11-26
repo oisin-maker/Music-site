@@ -1,13 +1,16 @@
 ---
 import { gigs, gigWeek, sceneLabels, thames, toMap } from '../data/home.js';
-import { majorRoads, minorRoads } from '../data/streets.js';
+import { majorRoads } from '../data/streets.js';
 import { accessLevels } from '../data/venueAccess.js';
 const stepFree = gigs.filter((g) => g.access.level === 'step-free').length;
 // Thames path in the SVG's 400 x 300 space, from real coordinates.
 const line = (pts) => pts.map(([lat, lng], i) => { const p = toMap(lat, lng); return `${i ? 'L' : 'M'}${(p.x * 4).toFixed(1)} ${(p.y * 3).toFixed(1)}`; }).join(' ');
 const roads = majorRoads.map(line);
-const lanes = minorRoads.map(line);
-const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return `${i ? 'L' : 'M'}${(p.x * 4).toFixed(1)} ${(p.y * 3).toFixed(1)}`; }).join(' ');
+const river = line(thames);
+// A few faint area names so the pins have context. Positions are lat/lng, nudged clear of pins.
+const areas = [
+  ['Camden', 51.566, -0.156], ['Hackney', 51.565, -0.045], ['Brixton', 51.450, -0.112], ['New Cross', 51.471, -0.034],
+].map(([name, lat, lng]) => ({ name, ...toMap(lat, lng) }));
 ---
 <section id="map" class="rule-b gm-inv" style="padding:28px 0 36px">
   <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:18px">
@@ -24,11 +27,10 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   <div class="gm">
     <div class="gm-map" role="group" aria-label="Map of this week's picks">
       <svg viewBox="0 0 400 300" preserveAspectRatio="none" aria-hidden="true">
-        <g class="gm-lanes" aria-hidden="true">{lanes.map((d) => <path d={d} />)}</g>
-        <g class="gm-roads" aria-hidden="true">{roads.map((d) => <path d={d} />)}</g>
-        <path d={river} fill="none" stroke="#2F4B60" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
-        <path d={river} fill="none" stroke="#D40000" stroke-width="1" stroke-dasharray="3 5" />
+        <g class="gm-roads">{roads.map((d) => <path d={d} />)}</g>
+        <path class="gm-thames" d={river} />
       </svg>
+      {areas.map((a) => <span class="gm-place" aria-hidden="true" style={`left:${a.x}%;top:${a.y}%`}>{a.name}</span>)}
       <span class="gm-river">River Thames</span>
       {gigs.map((g, i) => (
         <button class="gm-pin" data-i={i} data-scene={g.scene} data-access={g.access.level} style={`left:${g.x}%;top:${g.y}%`} aria-pressed={i === 0 ? 'true' : 'false'} tabindex="-1" aria-label={`${i + 1}. ${g.day}: ${g.act} at ${g.venue}`}>
@@ -69,16 +71,19 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-inv { --ink: #FAF8F3; --paper: #161513; --muted: #B9B2A8; --red-soft: rgba(255,107,107,.45); background: #161513; color: #FAF8F3; margin: 0 calc(-1 * var(--gutter)); padding-left: var(--gutter) !important; padding-right: var(--gutter) !important; }
   .gm-inv .tag { border-color: #FF8A8A; color: #FF8A8A; }
   .gm-inv .gm-row[aria-expanded="true"] .gm-act { color: #FF6B6B; }
-  .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: stretch; }
-  .gm-map { position: relative; min-height: 640px; height: 100%; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; background: #1F1D1A; }
+  .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+  /* The map data is drawn for a 4:5 frame, so keep that shape and let it stay in view while the list scrolls. */
+  .gm-map { position: sticky; top: 16px; aspect-ratio: 4 / 5; max-height: calc(100vh - 32px); border: 1px solid rgba(250,248,243,.22); border-radius: 8px; overflow: hidden; background: #1C1B18; }
   .gm-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .gm-lanes path { fill: none; stroke: #FAF8F3; stroke-opacity: 0.16; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-  .gm-roads path { fill: none; stroke: #FAF8F3; stroke-opacity: 0.32; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-  .gm-river { position: absolute; left: 3%; top: 62%; font-family: var(--serif); font-style: italic; font-size: 15px; color: #8FB0C6; }
-  .gm-pin { position: absolute; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))); display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px 0 6px; border: 1px solid var(--ink); border-radius: 999px; background: var(--paper); color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
-  .gm-pin span { width: 22px; height: 22px; border-radius: 999px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 11px; }
-  .gm-pin[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; z-index: 2; box-shadow: 0 6px 16px rgba(212,0,0,.35); }
-  .gm-pin[aria-pressed="true"] span { background: #fff; color: var(--red); }
+  .gm-roads path { fill: none; stroke: #FAF8F3; stroke-opacity: 0.13; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .gm-thames { fill: none; stroke: #2C4556; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  .gm-river { position: absolute; left: 3%; top: 64%; font-family: var(--serif); font-style: italic; font-size: 14px; color: #7E9CB0; pointer-events: none; }
+  .gm-place { position: absolute; transform: translate(-50%, -50%); font-family: var(--cond); font-weight: 600; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(250,248,243,.38); white-space: nowrap; pointer-events: none; }
+  .gm-pin { position: absolute; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+  .gm-pin span { width: 26px; height: 26px; border-radius: 999px; background: #FAF8F3; color: #161513; display: flex; align-items: center; justify-content: center; font-family: var(--cond); font-weight: 700; font-size: 12px; box-shadow: 0 0 0 3px #1C1B18; transition: transform .15s; }
+  .gm-pin:hover span { transform: scale(1.12); }
+  .gm-pin[aria-pressed="true"] { z-index: 2; }
+  .gm-pin[aria-pressed="true"] span { width: 30px; height: 30px; background: var(--red); color: #fff; box-shadow: 0 0 0 3px #1C1B18, 0 4px 14px rgba(212,0,0,.45); }
   .gm-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
   .gm-list > li { border-bottom: 1px solid var(--red-soft); }
   .gm-row { width: 100%; min-height: 52px; display: grid; grid-template-columns: 28px 92px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border: 0; background: transparent; color: var(--ink); text-align: left; cursor: pointer; font-family: var(--mono); }
@@ -86,9 +91,6 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-n { width: 24px; height: 24px; border-radius: 999px; border: 1px solid var(--ink); display: flex; align-items: center; justify-content: center; font-family: var(--cond); font-weight: 700; font-size: 11px; }
   .gm-act { display: block; font-family: var(--cond); font-weight: 700; font-size: 16px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .gm-detail { display: flex; flex-direction: column; gap: 10px; padding: 0 0 16px 40px; }
-  .gm-area { font-style: normal; display: none; }
-  .gm-pin { padding: 0 6px; }
-  .gm-pin[aria-pressed="true"] { padding: 0 6px; }
   .gm-pin[hidden], .gm-list > li[hidden] { display: none !important; }
   .gm-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
   .gm-chip { height: 34px; padding: 0 14px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
@@ -99,8 +101,8 @@ const river = thames.map(([lat, lng], i) => { const p = toMap(lat, lng); return 
   .gm-access ul { margin: 0; padding-left: 18px; font-size: 12px; }
   .gm-access a { text-decoration: underline; text-underline-offset: 3px; }
   .gm-inv .gm-scene { border-color: #FAF8F3; color: #FAF8F3; }
-  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } .gm-map { height: auto; min-height: 0; aspect-ratio: 4 / 5; } }
-  @media (max-width: 600px) { .gm-map { aspect-ratio: 4 / 5; } .gm-act { white-space: normal; } .gm-pin[aria-pressed="true"] .gm-area { display: none; } .gm-pin span { width: 24px !important; height: 24px !important; font-size: 11px !important; } .gm-area { display: none; } .gm-pin { padding: 0; height: auto; border: 0; background: transparent; box-shadow: none; } .gm-pin span { width: 28px; height: 28px; font-size: 12px; } .gm-pin[aria-pressed="true"] { background: transparent; box-shadow: none; } .gm-pin[aria-pressed="true"] span { background: var(--red); color: #fff; box-shadow: 0 4px 12px rgba(212,0,0,.5); } }
+  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } .gm-map { position: relative; top: 0; max-height: none; } }
+  @media (max-width: 600px) { .gm-act { white-space: normal; } .gm-place { font-size: 10px; } .gm-pin span { width: 24px; height: 24px; font-size: 11px; } .gm-pin[aria-pressed="true"] span { width: 28px; height: 28px; } }
 </style>
 
 <script>
