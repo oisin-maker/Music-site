@@ -3,8 +3,25 @@ import { gigs, gigWeek, sceneLabels, thames, toMap } from '../data/home.js';
 import { majorRoads } from '../data/streets.js';
 import { accessLevels } from '../data/venueAccess.js';
 const stepFree = gigs.filter((g) => g.access.level === 'step-free').length;
-// Thames path in the SVG's 400 x 300 space, from real coordinates.
-const line = (pts) => pts.map(([lat, lng], i) => { const p = toMap(lat, lng); return `${i ? 'L' : 'M'}${(p.x * 4).toFixed(1)} ${(p.y * 3).toFixed(1)}`; }).join(' ');
+// Roads and river in the SVG's 400 x 300 space, from real coordinates.
+// Lines are smoothed into gentle curves through the points rather than drawn as straight segments.
+const pt = ([lat, lng]) => { const p = toMap(lat, lng); return [p.x * 4, p.y * 3]; };
+const f = (n) => n.toFixed(1);
+const line = (latlngs) => {
+  const P = latlngs.map(pt);
+  if (P.length < 3) return `M${f(P[0][0])} ${f(P[0][1])}` + P.slice(1).map(([x, y]) => ` L${f(x)} ${f(y)}`).join('');
+  let d = `M${f(P[0][0])} ${f(P[0][1])}`;
+  for (let i = 0; i < P.length - 1; i++) {
+    const p0 = P[i - 1] || P[i], p1 = P[i], p2 = P[i + 1], p3 = P[i + 2] || p2;
+    const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+    const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+    d += ` C${f(c1[0])} ${f(c1[1])} ${f(c2[0])} ${f(c2[1])} ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return d;
+};
+// Access notes: show the first sentence, keep the rest one tap away.
+const firstSentence = (t) => { const m = t.match(/^.*?[.!?](\s|$)/); return m ? m[0].trim() : t; };
+const restOf = (t) => t.slice(firstSentence(t).length).trim();
 const roads = majorRoads.map(line);
 const river = line(thames);
 // A few faint area names so the pins have context. Positions are lat/lng, nudged clear of pins.
@@ -50,10 +67,13 @@ const areas = [
           <div class="gm-detail" hidden={i !== 0}>
             <span class="muted" style="font-size:13px">{g.note}</span>
             <div class="gm-access">
-              <span class="label" style="font-size:11px">Access · {accessLevels[g.access.level].label}</span>
-              <span style="font-size:13px">{g.access.summary}</span>
-              {g.access.extras.length > 0 && <ul>{g.access.extras.map((x) => <li>{x}</li>)}</ul>}
-              <span class="muted" style="font-size:11px">{g.access.source ? <>From <a href={g.access.source} target="_blank" rel="noopener">{g.access.sourceLabel}</a>, checked {g.access.checked}.</> : <>Checked {g.access.checked}.</>} Always confirm with the venue. <a href="/accessibility#venues">How we check</a></span>
+              <span style="font-size:13px"><span class="label" style="font-size:11px">Access:</span> {firstSentence(g.access.summary)}</span>
+              <details>
+                <summary>More access info</summary>
+                {restOf(g.access.summary) && <p>{restOf(g.access.summary)}</p>}
+                {g.access.extras.length > 0 && <ul>{g.access.extras.map((x) => <li>{x}</li>)}</ul>}
+                <p class="muted">{g.access.source ? <>From <a href={g.access.source} target="_blank" rel="noopener">{g.access.sourceLabel}</a>, checked {g.access.checked}.</> : <>Checked {g.access.checked}.</>} Always confirm with the venue. <a href="/accessibility#venues">How we check</a></p>
+              </details>
             </div>
             <span style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
               <span class="tag gm-scene">{sceneLabels[g.scene]}</span>{g.tags.map((t) => <span class="tag">{t}</span>)}
@@ -73,7 +93,8 @@ const areas = [
   .gm-inv .gm-row[aria-expanded="true"] .gm-act { color: #FF6B6B; }
   .gm { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px; align-items: start; }
   /* The map data is drawn for a 4:5 frame, so keep that shape and let it stay in view while the list scrolls. */
-  .gm-map { position: sticky; top: 16px; aspect-ratio: 4 / 5; max-height: calc(100vh - 32px); border: 1px solid rgba(250,248,243,.22); border-radius: 8px; overflow: hidden; background: #1C1B18; }
+  .gm-map { position: sticky; top: 16px; width: min(100%, calc((100vh - 32px) * 0.8)); border: 1px solid rgba(250,248,243,.22); border-radius: 8px; overflow: hidden; background: #1C1B18; }
+  .gm-map::before { content: ''; display: block; padding-top: 125%; } /* 4:5, works in every browser */
   .gm-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .gm-roads path { fill: none; stroke: #FAF8F3; stroke-opacity: 0.13; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
   .gm-thames { fill: none; stroke: #2C4556; stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
@@ -97,11 +118,14 @@ const areas = [
   .gm-chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
   .gm-acc { display: inline-flex; gap: 4px; margin-top: 2px; font-family: var(--cond); font-weight: 600; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
   .gm-acc-step-free { color: #8FD9A8; } .gm-acc-partial { color: #F2C46D; } .gm-acc-no { color: #FF8A8A; } .gm-acc-unknown { color: #B9B2A8; }
-  .gm-access { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border: 1px solid rgba(250,248,243,.25); border-radius: 8px; }
-  .gm-access ul { margin: 0; padding-left: 18px; font-size: 12px; }
+  .gm-access { display: flex; flex-direction: column; gap: 4px; }
+  .gm-access details { font-size: 12px; }
+  .gm-access summary { cursor: pointer; width: fit-content; min-height: 24px; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+  .gm-access details p { margin: 6px 0 0; }
+  .gm-access ul { margin: 6px 0 0; padding-left: 18px; }
   .gm-access a { text-decoration: underline; text-underline-offset: 3px; }
   .gm-inv .gm-scene { border-color: #FAF8F3; color: #FAF8F3; }
-  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } .gm-map { position: relative; top: 0; max-height: none; } }
+  @media (max-width: 900px) { .gm { grid-template-columns: 1fr; } .gm-map { position: relative; top: 0; width: 100%; } }
   @media (max-width: 600px) { .gm-act { white-space: normal; } .gm-place { font-size: 10px; } .gm-pin span { width: 24px; height: 24px; font-size: 11px; } .gm-pin[aria-pressed="true"] span { width: 28px; height: 28px; } }
 </style>
 
