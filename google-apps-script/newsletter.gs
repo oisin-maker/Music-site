@@ -11,6 +11,15 @@ const SECRET = 'change-me-to-a-long-random-password';
 const SHEET_NAME = 'Subscribers';
 
 function doPost(e) {
+  try {
+    return handleSignup(e);
+  } catch (err) {
+    console.error(err);
+    return reply({ ok: false, error: String(err && err.message || err) });
+  }
+}
+
+function handleSignup(e) {
   let body;
   try {
     body = JSON.parse(e.postData.contents);
@@ -59,4 +68,11 @@ function getSheet() {
 
 function reply(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// To check the script yourself: choose testSignup in the toolbar and click Run.
+// The Execution log shows the reply, and a test@example.com row appears in the sheet.
+function testSignup() {
+  const result = doPost({ postData: { contents: JSON.stringify({ secret: SECRET, email: 'test@example.com', page: '/test' }) } });
+  Logger.log(result.getContent());
 }
