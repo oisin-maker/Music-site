@@ -46,4 +46,19 @@ npm run build   # production build into dist/
 - The Wire shows headlines, dates and short excerpts only, always linking back to the original outlet.
 - If every feed fails during a build, the site shows a saved set of headlines and says so.
 - Gig map listings, the playlist and articles marked `sample: true` are placeholders.
-- The newsletter forms don't send anywhere yet; connect them to your email tool (Buttondown, Mailchimp, Ghost etc.) when you pick one.
+- Newsletter sign-ups go to a Google Sheet (see below). When you pick a sending tool (Buttondown, Mailchimp, Ghost etc.), import the sheet and name the tool in `src/pages/privacy.astro`.
+
+## Newsletter sign-ups → Google Sheet (about 10 minutes)
+
+The footer form sends emails to `/api/subscribe` (`netlify/functions/subscribe.mjs`), which passes them to a small Google Apps Script that adds a row to your sheet. Until the two settings in step 5 exist, the form tells people sign-ups aren't working and stores nothing.
+
+1. Create a new Google Sheet (e.g. "Aerial subscribers").
+2. In the sheet, open **Extensions → Apps Script**. Delete what's there and paste in everything from `google-apps-script/newsletter.gs`.
+3. Change `SECRET` near the top to a long random password (30+ characters of letters and numbers), then save.
+4. Click **Deploy → New deployment**, choose type **Web app**, set **Execute as: Me** and **Who has access: Anyone**, then **Deploy**. Approve the permissions Google asks for (it may warn the app is unverified: click **Advanced → Go to … (unsafe)**; it's your own script). Copy the **Web app URL** (it ends in `/exec`).
+5. In Netlify, go to **Site configuration → Environment variables** and add:
+   - `NEWSLETTER_SCRIPT_URL`: the Web app URL from step 4
+   - `NEWSLETTER_SECRET`: the same password you put in `SECRET`
+6. Redeploy (**Deploys → Trigger deploy**), then sign up on the live site. A **Subscribers** tab appears in the sheet with your email.
+
+If you edit the script later, use **Deploy → Manage deployments → edit (pencil) → Version: New version** so the URL stays the same. Duplicate emails aren't added twice. If sign-ups fail, check **Logs → Functions → subscribe** in Netlify.

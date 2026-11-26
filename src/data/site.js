@@ -5,5 +5,5 @@ export const site = {
   email: 'hello@example.com',
   // TODO: the legal name of whoever runs Aerial (a person, collective or company).
   controller: 'the Aerial team',
-  lastReviewed: '25 November 2026',
+  lastReviewed: '26 November 2026',
 };
