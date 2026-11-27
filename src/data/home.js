@@ -69,6 +69,6 @@ export const quizScenes = [['dance', 'Dance & electronic'], ['bands', 'Guitar & 
 
 // Playlist: paste a Spotify/Apple Music embed URL here when ready.
 export const playlist = {
-  title: 'Aerial 50: November',
+  title: 'Small Rooms 50: November',
   embedUrl: '', // e.g. https://open.spotify.com/embed/playlist/XXXXXXXX
 };

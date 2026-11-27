@@ -1,5 +1,5 @@
 ---
-title: "Why we're starting Aerial"
+title: "Why we're starting Small Rooms"
 standfirst: "London's music starts in small rooms. Too many of them are closing. This is a site that takes their side."
 section: news
 date: 2026-11-23
@@ -20,7 +20,7 @@ Pubs and clubs across the city have closed or come under pressure in recent year
 
 ## What we'll do
 
-Aerial will review records, gigs and DJ sets; pick the best nights in small venues each week and put them on a map; and pull in the news from the rest of the scene so you don't have to go looking.
+Small Rooms will review records, gigs and DJ sets; pick the best nights in small venues each week and put them on a map; and pull in the news from the rest of the scene so you don't have to go looking.
 
 ## Get involved
 

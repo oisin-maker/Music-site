@@ -4,7 +4,7 @@ import MobileMenu from './MobileMenu.astro';
 const { solid = false, current = '' } = Astro.props;
 ---
 <header class:list={['site-header', { solid }]}>
-  <a href="/" class="logo" aria-label="Aerial home">Aerial</a>
+  <a href="/" class="logo" aria-label="Small Rooms home">Small Rooms</a>
   <nav id="main-nav" class="main-nav" aria-label="Main">
     {nav.map((item) => (
       <a href={item.href} aria-current={current === item.label ? 'page' : undefined}>{item.label}</a>

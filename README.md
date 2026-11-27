@@ -1,4 +1,4 @@
-# Aerial
+# Small Rooms
 
 London music, small rooms. A homepage and a navigable news page, built with [Astro](https://astro.build).
 
@@ -52,7 +52,7 @@ npm run build   # production build into dist/
 
 The footer form sends emails to `/api/subscribe` (`netlify/functions/subscribe.mjs`), which passes them to a small Google Apps Script that adds a row to your sheet. Until the two settings in step 5 exist, the form tells people sign-ups aren't working and stores nothing.
 
-1. Create a new Google Sheet (e.g. "Aerial subscribers").
+1. Create a new Google Sheet (e.g. "Small Rooms subscribers").
 2. In the sheet, open **Extensions → Apps Script**. Delete what's there and paste in everything from `google-apps-script/newsletter.gs`.
 3. Change `SECRET` near the top to a long random password (30+ characters of letters and numbers), then save.
 4. Click **Deploy → New deployment**, choose type **Web app**, set **Execute as: Me** and **Who has access: Anyone**, then **Deploy**. Approve the permissions Google asks for (it may warn the app is unverified: click **Advanced → Go to … (unsafe)**; it's your own script). Copy the **Web app URL** (it ends in `/exec`).

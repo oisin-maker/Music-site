@@ -9,14 +9,14 @@ const { items: wire, live } = await getWireItems();
 
 // One list: our articles (internal) + The Wire (external), newest first.
 const entries = [
-  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Aerial', badge: 'AE', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, image: a.image, imageAlt: a.imageAlt, score: a.score })),
+  ...articles.map((a) => ({ kind: 'own', section: a.section, source: 'Small Rooms', badge: 'SR', title: a.title, excerpt: a.standfirst, url: `/news/${a.slug}`, date: a.date, author: a.author, art: a.art, image: a.image, imageAlt: a.imageAlt, score: a.score })),
   ...wire.map((w) => ({ kind: 'wire', section: 'wire', source: w.source, badge: w.badge, title: w.title, excerpt: w.excerpt, url: w.url, date: w.date })),
 ].sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
 const outlets = [...new Set(wire.map((w) => w.source))];
 const navSections = [{ id: 'all', label: 'All' }, ...sections, { id: 'wire', label: 'The Wire' }];
 ---
-<Base title="News — Aerial">
+<Base title="News — Small Rooms">
   <section class="hero" aria-label="News">
     <div class="hero-img" role="img" aria-label="Tower Bridge and the Thames at dusk from above, with the Tower of London and HMS Belfast lit up" style="min-height:52vh;--hero-image:url(/images/photos/towerbridge.webp);--hero-size:cover"></div>
     <Header current="News" />

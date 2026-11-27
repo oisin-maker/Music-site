@@ -1,5 +1,5 @@
 /**
- * Aerial newsletter sign-ups → Google Sheet.
+ * Small Rooms newsletter sign-ups → Google Sheet.
  *
  * Paste this into Extensions → Apps Script in your subscribers sheet,
  * change SECRET below, then Deploy → New deployment → Web app

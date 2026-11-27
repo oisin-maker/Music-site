@@ -26,6 +26,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
           {(featured.tags || []).slice(0, 2).map((t) => <span class="tag">{t}</span>)}
         </span>
         <h1><a href={`/news/${featured.slug}`}>{featured.title}</a></h1>
+        {featured.standfirst && <p class="hero-standfirst">{featured.standfirst}</p>}
         <span style="font-size:13px;color:rgba(255,255,255,.85)">By {featured.author} · {fmt(featured.date)}</span>
       </div>
       {featured.score && <div style="display:flex;align-items:baseline;gap:6px"><span class="score">{featured.score}</span><span style="font-size:13px;color:rgba(255,255,255,.8)">/10</span></div>}
@@ -38,7 +39,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
       <div class="col-r" style="display:flex;flex-direction:column;gap:20px">
         <p class="serif statement">A home for London music fans with taste — and a stand against the closing of the city's <em>small rooms</em>: the pubs, basements and arches where London's music starts.</p>
         <div style="display:flex;flex-wrap:wrap;gap:10px">
-          <a class="btn btn-ink" href="/news/why-aerial">Read our manifesto</a>
+          <a class="btn btn-ink" href="/news/why-small-rooms">Read our manifesto</a>
           <a class="btn" href="#map">This week's gig map</a>
         </div>
       </div>
@@ -46,7 +47,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
 
     <section id="reviews" class="rule-b" style="padding:28px 0 36px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">
-        <h2 class="label" style="margin:0;font-size:14px">Latest from Aerial</h2>
+        <h2 class="label" style="margin:0;font-size:14px">Latest from Small Rooms</h2>
         <a class="link-red" style="font-size:12px" href="/news">All news</a>
       </div>
       <div class="tiles">
