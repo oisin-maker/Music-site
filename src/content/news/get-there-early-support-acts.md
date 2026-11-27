@@ -7,8 +7,9 @@ date: 2026-11-27
 author: "Alex McSwiggan"
 tags: [Indie & guitar, Support acts]
 art: f
-image: "/images/photos/bandbw.webp"
-imageAlt: "Black-and-white photo of a band playing under stage lights and smoke, with the crowd silhouetted in front"
+image: "/images/photos/support-acts.webp"
+imageAlt: "A guitarist leaps mid-song on a small pub stage, kicking a heel up, as the bassist plays on beside the drum kit"
+heroPos: "center 8%"
 ---
 
 There is a particular kind of Londoner who treats the support act like the adverts before a film. Doors at seven, headliner at nine, so you're in the pub round the corner until 8:45, sinking a pint you've timed to the minute, then sprinting up the road with your ticket open on a phone at 4% battery.
