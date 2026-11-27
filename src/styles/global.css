@@ -75,7 +75,7 @@ img { max-width: 100%; display: block; }
 }
 .hero a:hover { color: #FFD1D1; }
 .hero-body { position: relative; z-index: 1; margin: 0 var(--gutter); padding: 150px 0 44px; align-self: end; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
-.hero h1 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(48px, 8vw, 112px); line-height: 0.95; }
+.hero h1 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(48px, 8vw, 112px); line-height: 0.95; text-wrap: balance; }
 .hero h1 em { font-weight: 400; color: rgba(255,255,255,.85); }
 .hero-standfirst { margin: 0; max-width: 720px; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.6; color: rgba(255,255,255,.9); }
 .hero .score { font-family: var(--serif); font-weight: 700; font-size: clamp(72px, 10vw, 150px); line-height: 0.8; }

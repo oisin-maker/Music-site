@@ -1,4 +1,6 @@
 ---
+// Non-breaking hyphen, so words like "tech-house" never split across headline lines.
+const noSplit = (t) => t.replace(/(\w)-(\w)/g, '$1\u2011$2');
 const heroStyle = (a) => `${a.image ? `--hero-image:url(${a.image});--hero-size:${a.heroSize || 'cover'};--hero-pos:${a.heroPos || 'center'}${a.heroBg ? `;--hero-bg:${a.heroBg}` : ''}${a.heroPosMobile ? `;--hero-pos-m:${a.heroPosMobile}` : ''}` : ''}`;
 import Base from '../../layouts/Base.astro';
 import Header from '../../components/Header.astro';
@@ -21,9 +23,9 @@ const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'N
     <div class="hero-img" role={article.image ? "img" : undefined} aria-label={article.image ? (article.imageAlt || "Article photo") : undefined} aria-hidden={article.image ? undefined : "true"} style={heroStyle(article)}></div>
     <Header current={sectionLabel} />
     <div class="hero-body">
-      <div style="display:flex;flex-direction:column;gap:16px;max-width:980px">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:1200px">
         <nav aria-label="Breadcrumb" class="label"><a href="/news">News</a> / <a href={`/news?section=${article.section}`}>{sectionLabel}</a></nav>
-        <h1>{article.title}</h1>
+        <h1>{noSplit(article.title)}</h1>
         {article.standfirst && <p style="margin:0;max-width:720px;font-size:16px;line-height:1.65;color:rgba(255,255,255,.9)">{article.standfirst}</p>}
         <span style="font-size:13px;color:rgba(255,255,255,.8)">By {article.author} · {fmt(article.date)}{article.imageCredit && <> · Photo: {article.imageCredit}</>}</span>
       </div>

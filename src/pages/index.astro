@@ -1,4 +1,6 @@
 ---
+// Non-breaking hyphen, so words like "tech-house" never split across headline lines.
+const noSplit = (t) => t.replace(/(\w)-(\w)/g, '$1\u2011$2');
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import GigMap from '../components/GigMap.astro';
@@ -21,12 +23,12 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
     <a href={`/news/${featured.slug}`} class="hero-img" style={'display:block;' + heroStyle(featured)} aria-label={`Read: ${featured.title}. Photo: ${featured.imageAlt || ''}`}></a>
     <Header />
     <div class="hero-body">
-      <div style="display:flex;flex-direction:column;gap:16px;max-width:980px">
+      <div style="display:flex;flex-direction:column;gap:16px;max-width:1200px">
         <span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
           <span class="label" style="margin-right:6px">{featured.kicker || featured.section} · Featured</span>
           {(featured.tags || []).slice(0, 2).map((t) => <span class="tag">{t}</span>)}
         </span>
-        <h1><a href={`/news/${featured.slug}`}>{featured.title}</a></h1>
+        <h1><a href={`/news/${featured.slug}`}>{noSplit(featured.title)}</a></h1>
         {featured.standfirst && <p class="hero-standfirst">{featured.standfirst}</p>}
         <span style="font-size:13px;color:rgba(255,255,255,.85)">By {featured.author} · {fmt(featured.date)}</span>
       </div>
