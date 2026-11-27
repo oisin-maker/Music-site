@@ -25,7 +25,7 @@ const sectionLabel = sections.find((s) => s.id === article.section)?.label || 'N
         <nav aria-label="Breadcrumb" class="label"><a href="/news">News</a> / <a href={`/news?section=${article.section}`}>{sectionLabel}</a></nav>
         <h1>{article.title}</h1>
         {article.standfirst && <p style="margin:0;max-width:720px;font-size:16px;line-height:1.65;color:rgba(255,255,255,.9)">{article.standfirst}</p>}
-        <span style="font-size:13px;color:rgba(255,255,255,.8)">By {article.author} · {fmt(article.date)}</span>
+        <span style="font-size:13px;color:rgba(255,255,255,.8)">By {article.author} · {fmt(article.date)}{article.imageCredit && <> · Photo: {article.imageCredit}</>}</span>
       </div>
       {article.score && <div style="display:flex;align-items:baseline;gap:6px"><span class="score">{article.score}</span><span style="font-size:13px;color:rgba(255,255,255,.8)">/10</span></div>}
     </div>

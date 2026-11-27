@@ -26,6 +26,7 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
           {(featured.tags || []).slice(0, 2).map((t) => <span class="tag">{t}</span>)}
         </span>
         <h1><a href={`/news/${featured.slug}`}>{featured.title}</a></h1>
+        {featured.standfirst && <p class="hero-standfirst">{featured.standfirst}</p>}
         <span style="font-size:13px;color:rgba(255,255,255,.85)">By {featured.author} · {fmt(featured.date)}</span>
       </div>
       {featured.score && <div style="display:flex;align-items:baseline;gap:6px"><span class="score">{featured.score}</span><span style="font-size:13px;color:rgba(255,255,255,.8)">/10</span></div>}
