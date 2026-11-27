@@ -2,12 +2,12 @@
 export const nav = [
   { label: 'News', href: '/news' },
   { label: 'Reviews', href: '/#reviews' },
-  { label: 'Live', href: '/#map' },
   { label: 'Interviews', href: '/news?section=interviews' },
   { label: 'Playlist', href: '/#playlist' },
   { label: 'Gig map', href: '/#map' },
   { label: 'Quiz', href: '/#quiz' },
   { label: 'The Wire', href: '/news?section=wire' },
+  { label: 'Open call', href: '/open-call' },
 ];
 
 export const footerLinks = [
@@ -16,7 +16,7 @@ export const footerLinks = [
   { label: 'Inclusion', href: '/inclusion' },
   { label: 'Accessibility', href: '/accessibility' },
   { label: 'Privacy', href: '/privacy' },
-  { label: 'Write for us', href: 'mailto:hello@example.com' },
+  { label: 'Write for us', href: '/open-call' },
   { label: 'List your venue', href: 'mailto:hello@example.com' },
   { label: 'Advertise', href: 'mailto:hello@example.com' },
   { label: 'RSS', href: '/rss.xml' },
@@ -40,10 +40,12 @@ export const mobileMenu = [
     { h: 'Features', items: [['Spotlights', n('interviews')], ['Long reads', n('interviews')], ['Thought', n('thought')]] } ] },
   { tab: 'Playlist', href: '/#playlist', intro: 'Fifty songs a month, picked by the writers.', groups: [
     { h: 'Listen', items: [['50 of the month', '/#playlist']] } ] },
-  { tab: 'Gig map', href: '/#map', intro: '15 hand-picked nights a week across dance, guitar and rap.', groups: [
+  { tab: 'Gig map', href: '/#map', intro: 'Hand-picked nights every week across dance, guitar and rap.', groups: [
     { h: 'Browse', items: [['This week', '/#map'], ['By night', '/#map'], ['By area', '/#map']] } ] },
   { tab: 'Quiz', href: '/#quiz', intro: 'Three questions, every morning.', groups: [
     { h: 'Play', items: [['Today’s quiz', '/#quiz']] } ] },
   { tab: 'The Wire', href: n('wire'), intro: 'Headlines from the rest of the scene.', groups: [
     { h: 'By outlet', items: [['All outlets', n('wire')]] } ] },
+  { tab: 'Open call', href: '/open-call', intro: 'Paid commissions for London writers, photographers, artists and filmmakers.', groups: [
+    { h: 'Get involved', items: [['How it works', '/open-call#how'], ['Send a pitch', '/open-call#pitch'], ['Questions', '/open-call#faq']] } ] },
 ];

@@ -1,0 +1,35 @@
+---
+// Homepage banner for the open call. Links to /open-call.
+---
+<section class="ocb" aria-labelledby="ocb-title">
+  <div class="ocb-text">
+    <span class="ocb-top"><span class="logo ocb-logo" aria-hidden="true">Small Rooms</span><span class="ocb-badge">Open call</span></span>
+    <h2 id="ocb-title">Write, shoot, record to save London’s <em>small rooms.</em></h2>
+    <span class="ocb-actions"><a class="btn btn-red" href="/open-call">Pitch us</a><span>Paid commissions · First-timers welcome · Pitches open</span></span>
+  </div>
+  <div class="ocb-photos" aria-hidden="true">
+    <img src="/images/opencall/dance.webp" alt="" loading="lazy" />
+    <img src="/images/opencall/band.webp" alt="" loading="lazy" />
+    <img src="/images/opencall/rap.webp" alt="" loading="lazy" />
+  </div>
+</section>
+
+<style>
+  .ocb { margin: 0 calc(-1 * var(--gutter)); display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); background: #161513; color: #FAF8F3; min-height: 340px; }
+  .ocb-text { padding: 40px var(--gutter) 40px calc(var(--gutter) + 32px); display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+  .ocb-top { display: flex; align-items: center; gap: 18px; }
+  .ocb-logo { font-size: 34px; }
+  .ocb-badge { padding: 5px 12px; border-radius: 999px; background: var(--red); color: #fff; font-family: var(--cond); font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .ocb h2 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(32px, 4.2vw, 60px); line-height: 1.05; max-width: 880px; }
+  .ocb h2 em { font-weight: 400; }
+  .ocb-actions { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; font-size: 13px; color: rgba(250,248,243,.85); font-family: var(--cond); font-size: 15px; }
+  .ocb-actions .btn { height: 50px; padding: 0 28px; }
+  .ocb-photos { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .ocb-photos img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 800px) {
+    .ocb { grid-template-columns: 1fr; }
+    .ocb-text { padding: 32px var(--gutter); }
+    .ocb-photos { height: 200px; order: -1; }
+    .ocb-logo { font-size: 28px; }
+  }
+</style>

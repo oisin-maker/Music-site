@@ -1,0 +1,286 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { site } from '../data/site.js';
+
+// The "email us instead" lines only show once a real inbox is set in src/data/site.js.
+const hasEmail = !site.email.endsWith('example.com');
+const mail = `mailto:${site.email}?subject=Pitch`;
+
+const strip = [
+  ['Paid', '~£200 per piece, agreed in writing before you start.'],
+  ['Edited', 'If we agree it we’ll edit it, whatever your experience.'],
+  ['Credited', 'Your name on everything you make, with a link to your work.'],
+  ['Open', 'No portfolio or contacts needed. Pitch in writing, by voice note or on video.'],
+];
+const formats = [
+  ['Words', 'Reviews of nights, gigs and records. Scene reports. Interviews with artists, promoters, sound engineers and door staff. Essays on how London goes out.'],
+  ['Pictures', 'A photo essay of one night, start to finish. Portraits of the people who run small rooms. Documenting venues before they change.'],
+  ['Art & design', 'Illustration for features. Poster and flyer art. Cover art for 50 of the month, our monthly playlist.'],
+  ['Sound & film', 'A mix for 50 of the month. Audio interviews. A two-minute film about a room you love.'],
+];
+const wants = [
+  ['A small room in every borough.', 'Tell us about the venue at the end of your road.'],
+  ['Nights made by and for', 'LGBTQ+ Londoners.'],
+  ['The jobs that make a night work:', 'bar staff, sound engineers, promoters, door teams, cleaners.'],
+  ['Getting there and getting home:', 'night buses, last trains, the walk.'],
+  ['Rooms under threat:', 'closures, licensing fights and the campaigns to save them.'],
+];
+const steps = [
+  ['Pitch', 'A few lines on what you want to make, and why now. Written, voice note or video.'],
+  ['We reply', 'Within 1 month, yes or no, with a reason either way.'],
+  ['Commission', 'We agree the idea, length, deadline and fee in writing before you start.'],
+  ['Make it', 'An editor works with you, and we sort your ticket or guest list for the night you cover.'],
+  ['Publish and pay', 'Your work goes live with your name on it, and we pay within 30 days.'],
+];
+const faqs = [
+  ['Do I need to have been published before?', 'No. You don’t need to have been published or to have studied journalism. If we commission your idea, an editor works with you from the first draft to publication.'],
+  ['How much do you pay, and when?', 'Around £200 per piece. We agree the exact fee in writing before you start, and pay within 30 days of your work going live.'],
+  ['Who owns the work?', 'We set out the rights in writing when we commission you, before you start, so you know exactly where you stand.'],
+  ['Can I pitch more than one idea?', 'Yes. Send each idea as its own pitch so we can reply to each one properly.'],
+  ['I’m not in London any more. Can I still pitch?', 'Yes, as long as the scene you want to cover is here. Whether you live, work or grew up in London, we want to hear from you.'],
+];
+---
+<Base title="Open call — Small Rooms" description="Paid commissions for London writers, photographers, artists and filmmakers. First-timers welcome.">
+  <section class="oc-hero" aria-labelledby="oc-title">
+    <Header current="Open call" solid={false} cta={{ href: '#pitch', label: 'Send a pitch' }} />
+    <div class="oc-hero-body">
+      <div class="oc-hero-text">
+        <span class="label oc-kicker">Open call · Writers, photographers, artists, filmmakers</span>
+        <h1 id="oc-title">Make something for London’s <em>small rooms.</em></h1>
+        <p>Small Rooms is a new independent site for London’s grassroots music: the pubs, basements and arches where the city’s sound starts. We’re paying London creatives to cover it, across dance and electronic, guitar and bands, and rap, grime and drill. First-timers are welcome, and an editor will work with you all the way.</p>
+        <div class="oc-actions">
+          <a class="btn btn-red" href="#pitch">Send a pitch</a>
+          <a class="btn oc-btn-light" href="#how">How it works</a>
+          <span class="oc-note">Pitches open now</span>
+        </div>
+      </div>
+      <div class="oc-photos" aria-hidden="true">
+        <figure style="--drop:0"><img src="/images/opencall/dance.webp" alt="" /><figcaption class="label">Dance &amp; electronic</figcaption></figure>
+        <figure style="--drop:1"><img src="/images/opencall/band.webp" alt="" /><figcaption class="label">Guitar &amp; bands</figcaption></figure>
+        <figure style="--drop:0"><img src="/images/opencall/rap.webp" alt="" /><figcaption class="label">Rap, grime &amp; drill</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <ul class="oc-strip" aria-label="What you get">
+    {strip.map(([h, t]) => <li><strong class="serif">{h}</strong><span>{t}</span></li>)}
+  </ul>
+
+  <div class="wrap oc" id="main" tabindex="-1">
+    <section class="oc-sec" aria-labelledby="make">
+      <div class="oc-head">
+        <h2 id="make">What you could make</h2>
+        <p class="muted">Any format, any of our three scenes. If your idea doesn’t fit a box below, pitch it anyway.</p>
+      </div>
+      <ol class="oc-formats">
+        {formats.map(([h, t], i) => <li><span class="oc-num">0{i + 1}</span><h3>{h}</h3><p>{t}</p></li>)}
+      </ol>
+    </section>
+
+    <section class="oc-sec oc-split" aria-labelledby="want">
+      <h2 id="want">What we want <em>more of</em></h2>
+      <ul class="oc-wants">
+        {wants.map(([b, t]) => <li><strong>{b}</strong> {t}</li>)}
+      </ul>
+    </section>
+
+    <section class="oc-sec oc-who" aria-labelledby="who">
+      <img src="/images/photos/studio.webp" alt="Black-and-white photo of a producer standing in a home studio beside the speakers and a keyboard" loading="lazy" />
+      <div>
+        <h2 id="who">Who should pitch</h2>
+        <p>Whether you live, work or grew up in London, or the scene you want to cover is here. You don’t need to have been published or studied journalism.</p>
+        <p>We especially want to hear from people who are under-represented in music media: women and non-binary people, Black, Asian and global-majority Londoners, disabled and neurodivergent people, LGBTQ+ people, and working-class creatives.</p>
+        <p>Already a regular at a night, a venue or a crew? That’s the story we want.</p>
+      </div>
+    </section>
+
+    <section class="oc-sec" aria-labelledby="how" id="how-wrap">
+      <h2 id="how">How it works</h2>
+      <ol class="oc-steps">
+        {steps.map(([h, t], i) => <li><span class="oc-big">{i + 1}</span><h3>{h}</h3><p>{t}</p></li>)}
+      </ol>
+    </section>
+
+    <section class="oc-box" aria-labelledby="works">
+      <h2 id="works">Pitching should work <em>for you</em></h2>
+      <ul>
+        <li>Pitch in writing, as a voice note or video, or in BSL.</li>
+        <li>Need more time, a call instead of email, or help with the form? Tell us and we’ll adapt.</li>
+        <li>Covering a night? Tell us your access needs and we’ll check the venue with you first.</li>
+        {hasEmail && <li>Rather email? Send your pitch to <a href={mail}>{site.email}</a>.</li>}
+      </ul>
+    </section>
+
+    <section class="oc-sec oc-split" aria-labelledby="pitch">
+      <div>
+        <h2 id="pitch">Send a pitch</h2>
+        <p>Keep it short. Tell us what you want to make, where it happens and why it matters now. Two hundred words is plenty.</p>
+        <p class="oc-small muted">Fields marked * are needed.</p>
+      </div>
+      <form class="oc-form" name="pitch" method="POST" action="/open-call/thanks/" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="pitch" />
+        <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+        <div class="oc-row">
+          <label>Your name *<input name="name" required autocomplete="name" /></label>
+          <label>Email *<input name="email" type="email" required autocomplete="email" /></label>
+        </div>
+        <fieldset>
+          <legend>What do you want to make? *</legend>
+          <div class="oc-pills">
+            {formats.map(([h]) => <label class="oc-pill"><input type="radio" name="format" value={h} required /> {h}</label>)}
+          </div>
+        </fieldset>
+        <label>Which scene?<span class="oc-hint">Dance and electronic, guitar and bands, rap, grime and drill, or something across them.</span><input name="scene" /></label>
+        <label>Your pitch *<span class="oc-hint" id="pitch-hint">What, where, who, and why now.</span><textarea name="idea" rows="7" required aria-describedby="pitch-hint pitch-count"></textarea></label>
+        <span class="oc-small muted" id="pitch-count" aria-live="polite">0 of 200 words</span>
+        <div class="oc-row">
+          <label>Links to your work<span class="oc-hint">Instagram, SoundCloud, a blog. None yet is fine.</span><input name="links" /></label>
+          <label>Anything we can do to help?<span class="oc-hint">Access needs, a call instead of email, more time.</span><input name="help" /></label>
+        </div>
+        <label class="oc-check"><input type="checkbox" name="consent" value="yes" required /> <span>I’m happy for Small Rooms to keep my pitch and contact me about it. Read our <a href="/privacy#pitches">privacy notice</a>. *</span></label>
+        <div class="oc-submit">
+          <button class="btn btn-red" type="submit">Send pitch</button>
+          {hasEmail && <span class="oc-small">Rather send a voice note or video? Email <a href={mail}>{site.email}</a>.</span>}
+        </div>
+        <p class="oc-status" role="status"></p>
+      </form>
+    </section>
+
+    <section class="oc-sec" aria-labelledby="faq">
+      <h2 id="faq">Questions</h2>
+      <div class="oc-faq">
+        {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .oc-hero { position: relative; background: #161513; color: #FAF8F3; padding-bottom: 64px; }
+  .oc-hero :global(.site-header) { color: #fff; }
+  .oc-hero-body { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; align-items: center; padding: 140px var(--gutter) 0; }
+  .oc-kicker { color: #FF8A8A; font-size: 11px; }
+  .oc-hero h1 { margin: 16px 0 20px; font-family: var(--serif); font-weight: 700; font-size: clamp(44px, 6.4vw, 92px); line-height: 0.98; }
+  .oc-hero h1 em, .oc h2 em { font-weight: 400; }
+  .oc-hero p { margin: 0; max-width: 600px; color: rgba(250,248,243,.88); }
+  .oc-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 28px; }
+  .oc-btn-light { color: #FAF8F3; border-color: #FAF8F3; }
+  .oc-btn-light:hover { color: #FF8A8A; }
+  .oc-note { font-size: 12px; color: #B9B2A8; }
+  .oc-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: start; }
+  .oc-photos figure { margin: 0; transform: translateY(calc(var(--drop) * 36px)); }
+  .oc-photos img { width: 100%; aspect-ratio: 38 / 100; object-fit: cover; border-radius: 6px; }
+  .oc-photos figcaption { margin-top: 10px; font-size: 10px; }
+
+  .oc-strip { list-style: none; margin: 0; padding: 28px var(--gutter); display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; background: var(--red); color: #fff; }
+  .oc-strip li { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.45; }
+  .oc-strip strong { font-size: 24px; }
+
+  .oc h2 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: clamp(34px, 4vw, 52px); line-height: 1.05; }
+  .oc h3 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 24px; }
+  .oc-sec { padding: 64px 0 0; }
+  .oc-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 48px; margin-bottom: 24px; }
+  .oc-head p { margin: 0; max-width: 420px; font-size: 13px; }
+  .oc-formats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: var(--line); border-bottom: var(--line); }
+  .oc-formats li { padding: 24px 20px 28px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+  .oc-formats li + li { border-left: 1px solid var(--red-soft); }
+  .oc-formats li:first-child { padding-left: 0; }
+  .oc-formats p { margin: 0; }
+  .oc-num { font-size: 11px; color: var(--red); }
+
+  .oc-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; align-items: start; }
+  .oc-wants { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+  .oc-wants li { padding: 14px 0; border-bottom: 1px solid var(--red-soft); font-size: 14px; }
+
+  .oc-who { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); gap: 48px; align-items: center; }
+  .oc-who img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 8px; }
+  .oc-who p { margin: 14px 0 0; max-width: 680px; }
+
+  .oc-steps { list-style: none; margin: 24px 0 0; padding: 24px 0 28px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; border-top: 1px solid var(--ink); border-bottom: var(--line); }
+  .oc-steps li { display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+  .oc-steps h3 { font-family: var(--cond); font-size: 15px; }
+  .oc-steps p { margin: 0; }
+  .oc-big { font-family: var(--serif); font-weight: 700; font-size: 36px; line-height: 1; color: var(--red); }
+
+  .oc-box { margin-top: 64px; padding: 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr); gap: 32px; align-items: center; background: #161513; color: #FAF8F3; border-radius: 10px; }
+  .oc-box h2 { font-size: clamp(28px, 3vw, 40px); }
+  .oc-box ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; }
+  .oc-box a { text-decoration: underline; text-underline-offset: 3px; }
+
+  .oc-split > div > p { max-width: 420px; }
+  .oc-small { font-size: 12px; }
+  .oc-form { display: flex; flex-direction: column; gap: 20px; padding: 28px; background: #fff; border: 1px solid #CFC8BD; border-radius: 10px; }
+  .oc-form label, .oc-form legend { display: flex; flex-direction: column; gap: 6px; font-family: var(--cond); font-weight: 700; font-size: 14px; }
+  .oc-form fieldset { margin: 0; padding: 0; border: 0; }
+  .oc-form legend { margin-bottom: 10px; }
+  .oc-hint { font-family: var(--mono); font-weight: 400; font-size: 12px; color: var(--muted); }
+  .oc-form input:not([type=radio]):not([type=checkbox]), .oc-form textarea { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #A39B90; border-radius: 6px; background: var(--paper); font: inherit; font-family: var(--mono); font-weight: 400; font-size: 14px; color: var(--ink); }
+  .oc-form textarea { resize: vertical; }
+  .oc-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: end; }
+  .oc-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .oc-form .oc-pill { flex-direction: row; align-items: center; gap: 8px; min-height: 40px; padding: 0 16px; border: 1px solid #A39B90; border-radius: 999px; font-weight: 600; font-size: 13px; cursor: pointer; }
+  .oc-pill:has(input:checked) { border-color: var(--red); background: rgba(212,0,0,.06); }
+  .oc-pill input { accent-color: var(--red); margin: 0; }
+  .oc-form .oc-check { flex-direction: row; align-items: flex-start; gap: 10px; font-family: var(--mono); font-weight: 400; font-size: 13px; }
+  .oc-check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--red); flex: none; }
+  .oc-form a { color: var(--red); text-decoration: underline; text-underline-offset: 3px; }
+  .oc-submit { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .oc-status { margin: 0; font-size: 14px; }
+  .oc-status:empty { display: none; }
+
+  .oc-faq { margin-top: 24px; border-top: 1px solid var(--ink); margin-bottom: 72px; }
+  .oc-faq details { border-bottom: 1px solid var(--red-soft); }
+  .oc-faq summary { padding: 16px 0; font-family: var(--cond); font-weight: 700; font-size: 16px; cursor: pointer; }
+  .oc-faq p { margin: 0 0 18px; max-width: 760px; }
+
+  @media (max-width: 900px) {
+    .oc-hero-body, .oc-split, .oc-who, .oc-box { grid-template-columns: 1fr; gap: 28px; }
+    .oc-hero-body { padding-top: 120px; }
+    .oc-photos { max-width: 520px; }
+    .oc-strip { grid-template-columns: 1fr 1fr; }
+    .oc-formats { grid-template-columns: 1fr 1fr; }
+    .oc-formats li:nth-child(3) { border-left: 0; padding-left: 0; }
+    .oc-formats li:nth-child(n+3) { border-top: 1px solid var(--red-soft); }
+    .oc-steps { grid-template-columns: 1fr 1fr; }
+    .oc-who img { max-width: 420px; }
+  }
+  @media (max-width: 600px) {
+    .oc-strip, .oc-formats, .oc-row { grid-template-columns: 1fr; }
+    .oc-formats li { padding-left: 0; border-left: 0 !important; }
+    .oc-formats li + li { border-top: 1px solid var(--red-soft); }
+    .oc-steps { grid-template-columns: 1fr; }
+    .oc-box { padding: 28px 22px; }
+    .oc-form { padding: 20px; }
+    .oc-photos figure { transform: translateY(calc(var(--drop) * 20px)); }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('.oc-form');
+  const textarea = form?.querySelector<HTMLTextAreaElement>('textarea[name="idea"]');
+  const count = document.getElementById('pitch-count');
+  textarea?.addEventListener('input', () => {
+    const n = textarea.value.trim() ? textarea.value.trim().split(/\s+/).length : 0;
+    if (count) count.textContent = `${n} of 200 words${n > 200 ? ', a bit long, but we’ll still read it' : ''}`;
+  });
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const status = form.querySelector<HTMLElement>('.oc-status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    button.disabled = true;
+    status.textContent = 'Sending…';
+    try {
+      const body = new URLSearchParams(new FormData(form) as unknown as Record<string, string>).toString();
+      const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      if (count) count.textContent = '0 of 200 words';
+      status.textContent = 'Thanks, your pitch is in. We’ll reply within a month, yes or no.';
+    } catch {
+      status.textContent = 'Sorry, your pitch didn’t send. Please try again in a moment.';
+    } finally {
+      button.disabled = false;
+    }
+  });
+</script>

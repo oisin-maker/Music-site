@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import GigMap from '../components/GigMap.astro';
 import Quiz from '../components/Quiz.astro';
+import OpenCallBanner from '../components/OpenCallBanner.astro';
 import { getArticles } from '../lib/articles.js';
 import { getWireItems, formatDate } from '../lib/feeds.js';
 import { playlist } from '../data/home.js';
@@ -44,6 +45,8 @@ const fmt = (d) => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', mon
         </div>
       </div>
     </section>
+
+    <OpenCallBanner />
 
     <section id="reviews" class="rule-b" style="padding:28px 0 36px">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px">

@@ -1,7 +1,7 @@
 ---
 import { nav } from '../data/nav.js';
 import MobileMenu from './MobileMenu.astro';
-const { solid = false, current = '' } = Astro.props;
+const { solid = false, current = '', cta = { href: '#newsletter', label: 'Newsletter' } } = Astro.props;
 ---
 <header class:list={['site-header', { solid }]}>
   <a href="/" class="logo" aria-label="Small Rooms home">Small Rooms</a>
@@ -11,7 +11,7 @@ const { solid = false, current = '' } = Astro.props;
     ))}
   </nav>
   <div style="display:flex;gap:10px;align-items:center">
-    <a href="#newsletter" class="btn btn-red">Newsletter</a>
+    <a href={cta.href} class="btn btn-red">{cta.label}</a>
     <button class="btn nav-toggle" aria-controls="mobile-menu" aria-expanded="false" style={solid ? '' : 'color:#fff;border-color:#fff'}>Menu</button>
   </div>
 </header>
