@@ -48,7 +48,7 @@ const faqs = [
       <div class="oc-hero-text">
         <span class="label oc-kicker">Open call · Writers, photographers, artists, filmmakers</span>
         <h1 id="oc-title">Make something for London’s <em>small rooms.</em></h1>
-        <p>Small Rooms is a new independent site for London’s grassroots music: the pubs, basements and arches where the city’s sound starts. We’re paying London creatives to cover it, across dance and electronic, guitar and bands, and rap, grime and drill. First-timers are welcome, and an editor will work with you all the way.</p>
+        <p>Small Rooms is a new independent site for London’s grassroots music: the pubs, basements and arches where the city’s sound starts. We’re paying London creatives to cover it, whatever the sound. First-timers are welcome, and an editor will work with you all the way.</p>
         <div class="oc-actions">
           <a class="btn btn-red" href="#pitch">Send a pitch</a>
           <a class="btn oc-btn-light" href="#how">How it works</a>
@@ -56,9 +56,9 @@ const faqs = [
         </div>
       </div>
       <div class="oc-photos" aria-hidden="true">
-        <figure style="--drop:0"><img src="/images/opencall/dance.webp" alt="" /><figcaption class="label">Dance &amp; electronic</figcaption></figure>
-        <figure style="--drop:1"><img src="/images/opencall/band.webp" alt="" /><figcaption class="label">Guitar &amp; bands</figcaption></figure>
-        <figure style="--drop:0"><img src="/images/opencall/rap.webp" alt="" /><figcaption class="label">Rap, grime &amp; drill</figcaption></figure>
+        <figure style="--drop:0"><img src="/images/opencall/dance.webp" alt="" /></figure>
+        <figure style="--drop:1"><img src="/images/opencall/band.webp" alt="" /></figure>
+        <figure style="--drop:0"><img src="/images/opencall/rap.webp" alt="" /></figure>
       </div>
     </div>
   </section>
@@ -71,7 +71,7 @@ const faqs = [
     <section class="oc-sec" aria-labelledby="make">
       <div class="oc-head">
         <h2 id="make">What you could make</h2>
-        <p class="muted">Any format, any of our three scenes. If your idea doesn’t fit a box below, pitch it anyway.</p>
+        <p class="muted">Any format, any sound. If your idea doesn’t fit a box below, pitch it anyway.</p>
       </div>
       <ol class="oc-formats">
         {formats.map(([h, t], i) => <li><span class="oc-num">0{i + 1}</span><h3>{h}</h3><p>{t}</p></li>)}
@@ -131,7 +131,7 @@ const faqs = [
             {formats.map(([h]) => <label class="oc-pill"><input type="radio" name="format" value={h} required /> {h}</label>)}
           </div>
         </fieldset>
-        <label>Which scene?<span class="oc-hint">Dance and electronic, guitar and bands, rap, grime and drill, or something across them.</span><input name="scene" /></label>
+        <label>Which scene?<span class="oc-hint">Whatever you want to cover: a sound, a night, a crew, or something in between.</span><input name="scene" /></label>
         <label>Your pitch *<span class="oc-hint" id="pitch-hint">What, where, who, and why now.</span><textarea name="idea" rows="7" required aria-describedby="pitch-hint pitch-count"></textarea></label>
         <span class="oc-small muted" id="pitch-count" aria-live="polite">0 of 200 words</span>
         <div class="oc-row">
@@ -171,7 +171,6 @@ const faqs = [
   .oc-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: start; }
   .oc-photos figure { margin: 0; transform: translateY(calc(var(--drop) * 36px)); }
   .oc-photos img { width: 100%; aspect-ratio: 38 / 100; object-fit: cover; border-radius: 6px; }
-  .oc-photos figcaption { margin-top: 10px; font-size: 10px; }
 
   .oc-strip { list-style: none; margin: 0; padding: 28px var(--gutter); display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; background: var(--red); color: #fff; }
   .oc-strip li { display: flex; flex-direction: column; gap: 4px; font-size: 13px; line-height: 1.45; }
