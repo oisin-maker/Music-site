@@ -2,9 +2,9 @@
 // Layout for text pages (accessibility, inclusion, privacy).
 import Base from './Base.astro';
 import Header from '../components/Header.astro';
-const { title, intro, kicker = 'About Aerial', sections = [] } = Astro.props;
+const { title, intro, kicker = 'About Small Rooms', sections = [] } = Astro.props;
 ---
-<Base title={`${title} — Aerial`} description={intro}>
+<Base title={`${title} — Small Rooms`} description={intro}>
   <section class="hero page-hero" aria-label={title}>
     <div class="hero-img" aria-hidden="true" style="min-height:40vh;--hero-image:none;--hero-bg:#141416"></div>
     <Header current="" />

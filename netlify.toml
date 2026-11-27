@@ -4,3 +4,9 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# The manifesto moved when the site was renamed from Aerial to Small Rooms.
+[[redirects]]
+  from = "/news/why-aerial"
+  to = "/news/why-small-rooms"
+  status = 301

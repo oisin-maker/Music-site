@@ -59,7 +59,7 @@ export const config = { path: '/api/subscribe' };
 function page(ok, message) {
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${ok ? 'Subscribed' : 'Sign-up problem'} · Aerial</title>
+<title>${ok ? 'Subscribed' : 'Sign-up problem'} · Small Rooms</title>
 <style>body{font-family:system-ui,sans-serif;background:#F4EFE6;color:#1A1714;max-width:36rem;margin:15vh auto;padding:0 16px;line-height:1.5}a{color:inherit}</style></head>
-<body><h1>${ok ? 'You’re subscribed' : 'Sorry'}</h1><p>${esc(message)}</p><p><a href="/">Back to Aerial</a></p></body></html>`;
+<body><h1>${ok ? 'You’re subscribed' : 'Sorry'}</h1><p>${esc(message)}</p><p><a href="/">Back to Small Rooms</a></p></body></html>`;
 }

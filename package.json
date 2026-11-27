@@ -1,7 +1,7 @@
 {
-  "name": "aerial-site",
+  "name": "small-rooms-site",
   "version": "1.0.0",
-  "description": "Aerial: London music, small rooms. Homepage and news site.",
+  "description": "Small Rooms: London music. Homepage and news site.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
